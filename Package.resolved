@@ -1,0 +1,15 @@
+{
+  "originHash" : "ecb9e8c5a43a642bc98ec476d56040627450e355032d2a054cf1ae359f290c71",
+  "pins" : [
+    {
+      "identity" : "jkswiftextension",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/JoanKing/JKSwiftExtension.git",
+      "state" : {
+        "revision" : "60ed6ddc03b541fe251cb0bbc0cca1fea389a4ac",
+        "version" : "2.8.3"
+      }
+    }
+  ],
+  "version" : 3
+}
