@@ -9,29 +9,28 @@
 import UIKit
 
 public extension UIFont {
-    @MainActor static func fitSize(_ fontSize: CGFloat) -> CGFloat {
-        let realSize = (UIScreen.main.bounds.width / 375.0) * fontSize
+    static func fitSize(_ fontSize: CGFloat) -> CGFloat {
+        let realSize = (UIScreen.jk.width / 375.0) * fontSize
         return ceil(realSize)
     }
     
     /// 苹方-简 常规体 PingFangSC-Regular
-    @MainActor
     static func regular(_ size:CGFloat) -> UIFont {
         return UIFont(name: "PingFangSC-Regular", size: fitSize(size)) ?? UIFont.systemFont(ofSize:fitSize(size))
     }
     
     /// 苹方-简 中黑体 PingFangSC-Medium
-    @MainActor static func medium(_  size:CGFloat) -> UIFont {
+    static func medium(_  size:CGFloat) -> UIFont {
         return UIFont(name: "PingFangSC-Medium", size: fitSize(size)) ?? UIFont.systemFont(ofSize:fitSize(size))
     }
     
     /// 苹方-简 中粗体 PingFangSC-Semibold
-    @MainActor static func semibold(_ size:CGFloat) -> UIFont {
+    static func semibold(_ size:CGFloat) -> UIFont {
         return UIFont(name: "PingFangSC-Semibold", size: fitSize(size)) ?? UIFont.systemFont(ofSize:fitSize(size))
     }
     
     /// 苹方-特粗体 PingFang-SC-Heavy
-    @MainActor static func heavy(_ size:CGFloat) -> UIFont {
+    static func heavy(_ size:CGFloat) -> UIFont {
         return UIFont(name: "PingFang-SC-Heavy", size: fitSize(size)) ?? UIFont.systemFont(ofSize:fitSize(size))
     }
 }
