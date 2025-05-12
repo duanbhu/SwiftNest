@@ -145,21 +145,21 @@ public extension UIView {
 }
 
 public extension Int {
-    @MainActor var hpt: CGFloat {
+    var hpt: CGFloat {
         CGFloat(self).wpt
     }
     
-    @MainActor var wpt: CGFloat {
+    var wpt: CGFloat {
         CGFloat(self).wpt
     }
 }
 
 public extension CGFloat {
-    @MainActor var hpt: CGFloat {
+    var hpt: CGFloat {
         return kFitScale(at: self)
     }
     
-    @MainActor var wpt: CGFloat {
+    var wpt: CGFloat {
         return kFitScale(at: self)
     }
 }

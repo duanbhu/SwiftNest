@@ -8,19 +8,15 @@ import UIKit
 @MainActor
 public let kScreenBounds = UIScreen.main.bounds
 
-@MainActor
-public let kScreenWidth = UIScreen.main.bounds.size.width
+public let kScreenWidth = UIScreen.jk.width
 
-@MainActor
-public let kScreenHeight = UIScreen.main.bounds.size.height
+public let kScreenHeight = UIScreen.jk.height
 
 // MARK: - 屏幕适配375 | 6s尺寸
-@MainActor
 func kFitScale(at ratio: CGFloat) -> CGFloat {
-    return (UIScreen.main.bounds.width / 375) * ratio
+    return (UIScreen.jk.width / 375) * ratio
 }
 
-@MainActor
 func kFitSize(w: CGFloat, h: CGFloat) -> CGSize {
     return CGSize(width: kFitScale(at: w), height: kFitScale(at: h))
 }
