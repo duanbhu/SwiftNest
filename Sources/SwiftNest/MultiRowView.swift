@@ -361,6 +361,7 @@ public extension MultiRowView {
         return self
     }
     
+    /// stackView2与Title水平对齐
     func centerYByTitle() {
         stackView2.removeFromSuperview()
         self.addSubview(stackView2)
