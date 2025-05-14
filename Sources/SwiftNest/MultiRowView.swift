@@ -203,7 +203,7 @@ public class MultiRowView: UIControl {
         }
     }
     
-    init() {
+    public init() {
         super.init(frame: .zero)
         makeUI()
     }
@@ -227,7 +227,7 @@ public class MultiRowView: UIControl {
     }
 }
 
-extension MultiRowView {
+public extension MultiRowView {
     @discardableResult
     func icon(_ image: UIImage?, resize: CGSize? = nil) -> Self {
         iconImageView.image(image)
