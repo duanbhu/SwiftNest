@@ -28,6 +28,10 @@ public class MultiRowConfiguration: NSObject {
     var detailsColor: UIColor = .black
     var detailsFont: UIFont = .regular(14)
     
+//    var placeholderColor: UIColor = .placeholderText
+    var textFieldColor: UIColor = .black
+    var textFieldFont: UIFont = .regular(14)
+    
     var valueColor: UIColor = .gray
     var valueFont: UIFont = .regular(14)
     
@@ -38,7 +42,7 @@ public class MultiRowConfiguration: NSObject {
     var switchOffImage = UIImage(named: "icon_row_switch_off")
 }
 
-extension MultiRowView {
+public extension MultiRowView {
     enum TrailerType {
         case none
         case password // 密码输入框
@@ -48,7 +52,7 @@ extension MultiRowView {
     }
 }
 
-extension MultiRowView {
+public extension MultiRowView {
     var title: String? {
         get {
             return titleLabel.text
@@ -67,7 +71,7 @@ extension MultiRowView {
         }
     }
     
-    var tfText: String? {
+    var textFieldText: String? {
         get {
             return textField.text
         }
@@ -95,7 +99,14 @@ extension MultiRowView {
     }
 }
 
-class MultiRowView: UIControl {
+/**
+ 「 -------------------------------------------------------------------contentStackView ---------------------------------------------------------------------------------------------|
+             
+     【iconImageView】 【 stackView1  [titleLabel] [detailsLabel] [textField] 】 【 stackView2  [valueLabel] [annexButton]】
+ 
+  ------------------------------------------------------------------------------------——————---------- 』
+ */
+public class MultiRowView: UIControl {
     private(set) lazy var iconImageView: UIImageView  = {
         let imageView = UIImageView()
         contentStackView.insertArrangedSubview(imageView, at: 0)
@@ -123,6 +134,8 @@ class MultiRowView: UIControl {
     
     private(set) lazy var textField: UITextField = {
         let textField = UITextField()
+        textField.font = MultiRowConfiguration.default().textFieldFont
+        textField.textColor = MultiRowConfiguration.default().textFieldColor
         textField.clearButtonMode = .whileEditing
         stackView1.addArrangedSubview(textField)
         return textField
@@ -162,24 +175,24 @@ class MultiRowView: UIControl {
         return stackView
     }()
     
-    // titleLabel + detailsLabel / textField / textView
+    /// titleLabel + detailsLabel / textField / textView
     private lazy var stackView1: UIStackView  = {
         let stackView = UIStackView(arrangedSubviews: [])
         stackView.axis = .horizontal
         stackView.alignment = .leading
         stackView.distribution = .fill
-        stackView.spacing = 4
+        stackView.spacing = 5
         contentStackView.addArrangedSubview(stackView)
         return stackView
     }()
     
-    // valueLabel + annexButton
+    /// valueLabel + annexButton
     private lazy var stackView2: UIStackView  = {
         let stackView = UIStackView(arrangedSubviews: [])
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.distribution = .fill
-        stackView.spacing = 4
+        stackView.spacing = 5
         contentStackView.addArrangedSubview(stackView)
         return stackView
     }()
@@ -279,19 +292,33 @@ extension MultiRowView {
     }
     
     @discardableResult
-    func titleAxis(_ axis: NSLayoutConstraint.Axis) -> Self {
+    func placeholder(_ placeholder: String, font: UIFont? = nil, color: UIColor? = nil) -> Self {
+        textField.placeholder = placeholder
+        
+        if let font = font {
+            textField.font = font
+        }
+        
+        if let color = color {
+            textField.textColor = color
+        }
+        return self
+    }
+    
+    @discardableResult
+    func leftStackAxis(_ axis: NSLayoutConstraint.Axis) -> Self {
         stackView1.axis = axis
         return self
     }
     
     @discardableResult
-    func titleSpacing(_ spacing: CGFloat) -> Self {
+    func leftStackSpacing(_ spacing: CGFloat) -> Self {
         stackView1.spacing = spacing
         return self
     }
     
     @discardableResult
-    func titleAlignment(_ alignment: UIStackView.Alignment) -> Self {
+    func leftStackAlignment(_ alignment: UIStackView.Alignment) -> Self {
         stackView1.alignment = alignment
         return self
     }
