@@ -35,11 +35,18 @@ public class MultiRowConfiguration: NSObject {
     var valueColor: UIColor = .gray
     var valueFont: UIFont = .regular(14)
     
+    /// 黑色箭头
     var arrowImage = UIImage(named: "icon_row_arrow_right_black")
     
     var switchOnImage = UIImage(named: "icon_row_switch_on")
     
     var switchOffImage = UIImage(named: "icon_row_switch_off")
+    
+    /// 输入密码时，开启/关闭密文的小眼睛
+    var eyeOffImage = UIImage(named: "icon_row_eye_off")
+    
+    /// 输入密码时，开启/关闭密文的小眼睛
+    var eyeOnImage = UIImage(named: "icon_row_eye_on")
 }
 
 public extension MultiRowView {
@@ -47,7 +54,7 @@ public extension MultiRowView {
         case none
         case password // 密码输入框
         case verificationCode  // 获取验证码
-        case arrow
+        case arrow // 箭头
         case `switch`
     }
 }
@@ -100,11 +107,13 @@ public extension MultiRowView {
 }
 
 /**
- 「 -------------------------------------------------------------------contentStackView ---------------------------------------------------------------------------------------------|
-             
-     【iconImageView】 【 stackView1  [titleLabel] [detailsLabel] [textField] 】 【 stackView2  [valueLabel] [annexButton]】
- 
-  ------------------------------------------------------------------------------------——————---------- 』
+ |-------------------------------------------------------------------------------- contentStackView -------------------------------------------------------------------------------- |
+ |                                                                                                                                                                                                                               |
+ |                                                                                                                                                                                                                               |
+ |       【iconImageView】 【 stackView1  [titleLabel] [detailsLabel] [textField] 】 【 stackView2  [valueLabel] [annexButton]】               |
+ |                                                                                                                                                                                                                               |
+ |                                                                                                                                                                                                                               |
+ |-------------------------------------------------------------------------------- contentStackView -------------------------------------------------------------------------------- |
  */
 public class MultiRowView: UIControl {
     private(set) lazy var iconImageView: UIImageView  = {
@@ -112,7 +121,7 @@ public class MultiRowView: UIControl {
         contentStackView.insertArrangedSubview(imageView, at: 0)
         return imageView
     }()
-
+    
     private(set) lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = MultiRowConfiguration.default().titleFont
@@ -132,7 +141,7 @@ public class MultiRowView: UIControl {
         return label
     }()
     
-    private(set) lazy var textField: UITextField = {
+    public private(set) lazy var textField: UITextField = {
         let textField = UITextField()
         textField.font = MultiRowConfiguration.default().textFieldFont
         textField.textColor = MultiRowConfiguration.default().textFieldColor
@@ -154,17 +163,17 @@ public class MultiRowView: UIControl {
         return label
     }()
     
-    private(set) lazy var annexButton: UIButton = {
+    public private(set) lazy var annexButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14)
+        button.setTitleColor(MultiRowConfiguration.default().themeColor, for: .normal)
+        button.titleLabel?.font = MultiRowConfiguration.default().detailsFont
         button.isUserInteractionEnabled = false
         stackView2.addArrangedSubview(button)
         return button
     }()
     
     // MARK: - content stackView
-    // iconImageView + 【stackView1】
+    // iconImageView +【stackView1】+【stackView2】
     private lazy var contentStackView: UIStackView  = {
         let stackView = UIStackView(arrangedSubviews: [])
         stackView.axis = .horizontal
@@ -203,9 +212,41 @@ public class MultiRowView: UIControl {
         }
     }
     
-    public init() {
+    public init(insets: UIEdgeInsets = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)) {
+        self.insets = insets
         super.init(frame: .zero)
         makeUI()
+    }
+    
+    public convenience init<T: MultiRowEntityable>(entity: T) {
+        self.init()
+        if let icon = entity.icon {
+            self.icon(icon)
+        }
+        
+        if let title = entity.title {
+            self.title(title)
+        }
+        
+        if let details = entity.details {
+            self.details(details)
+        }
+        
+        if let value = entity.value {
+            self.value(value)
+        }
+        
+        if let placeholder = entity.placeholder {
+            self.placeholder(placeholder)
+        }
+        
+        self.trailerType(entity.trailerType)
+        
+        if let height = entity.height {
+            NSLayoutConstraint.activate([
+                heightAnchor.constraint(equalToConstant: height)
+            ])
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -330,10 +371,33 @@ public extension MultiRowView {
             annexButton.isHidden = true
         case .password:
             textField.isSecureTextEntry = true
-            break
+            annexButton.setImage(MultiRowConfiguration.default().eyeOffImage, for: .normal)
+            annexButton.setImage(MultiRowConfiguration.default().eyeOnImage, for: .selected)
+            annexButton.isUserInteractionEnabled = true
+            annexButton.addTarget(self, action: #selector(tapEyeButton), for: .touchUpInside)
+            
+            if stackView1.axis == .vertical {
+                // 按钮与textField居中对齐
+                contentStackView.alignment = .lastBaseline
+            }
+            NSLayoutConstraint.activate([
+                annexButton.widthAnchor.constraint(equalToConstant: 22)
+            ])
         case .verificationCode:
             annexButton.setTitleColor(MultiRowConfiguration.default().themeColor, for: .normal)
             annexButton.setTitle("获取验证码", for: .normal)
+            
+            if stackView1.axis == .vertical {
+                // 按钮与textField居中对齐
+                contentStackView.alignment = .lastBaseline
+                NSLayoutConstraint.activate([
+                    textField.heightAnchor.constraint(equalTo: stackView2.heightAnchor)
+                ])
+            }
+            NSLayoutConstraint.activate([
+                annexButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 70),
+                annexButton.widthAnchor.constraint(lessThanOrEqualToConstant: 90)
+            ])
         case .arrow:
             annexButton.setImage(MultiRowConfiguration.default().arrowImage, for: .normal)
         case .switch:
@@ -370,5 +434,11 @@ public extension MultiRowView {
             stackView2.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
             stackView2.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right)
         ])
+    }
+    
+    /// 点击切换密码输入窗是否是密文
+    @objc private func tapEyeButton(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        textField.isSecureTextEntry = !sender.isSelected
     }
 }
