@@ -201,8 +201,7 @@ public class MultiRowView: UIControl {
     private lazy var stackView2: UIStackView  = {
         let stackView = UIStackView(arrangedSubviews: [])
         stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.distribution = .fill
+        stackView.alignment = .trailing
         stackView.spacing = 5
         contentStackView.addArrangedSubview(stackView)
         return stackView
@@ -399,9 +398,9 @@ public extension MultiRowView {
     
     @discardableResult
     func trailerType(_ trailerType: TrailerType) -> Self {
+        annexButton.isHidden = trailerType == .none
         switch trailerType {
-        case .none:
-            annexButton.isHidden = true
+        case .none: break
         case .password:
             textField.isSecureTextEntry = true
             annexButton.setImage(MultiRowConfiguration.default().eyeOffImage, for: .normal)
