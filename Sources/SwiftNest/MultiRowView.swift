@@ -327,7 +327,7 @@ public extension MultiRowView {
         if let color = color {
             titleLabel.jk.setSpecificTextColor(text, color: color)
         }
-        return self.title(font: font, color: color)
+        return self
     }
     
     @discardableResult
