@@ -20,6 +20,8 @@ public class MultiRowConfiguration: NSObject {
         MultiRowConfiguration.single = MultiRowConfiguration()
     }
     
+    public var insets = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
+    
     public var themeColor: UIColor = .black
     
     public var titleColor: UIColor = .black
@@ -206,16 +208,24 @@ public class MultiRowView: UIControl {
         return stackView
     }()
     
-    var insets = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16) {
+    var insets = MultiRowConfiguration.default().insets {
         didSet {
             updateLayoutContentViews()
         }
     }
     
-    public init(insets: UIEdgeInsets = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)) {
+    public init(insets: UIEdgeInsets = MultiRowConfiguration.default().insets) {
         self.insets = insets
         super.init(frame: .zero)
         makeUI()
+    }
+    
+    public convenience init(top: CGFloat, left: CGFloat, bottom: CGFloat, right: CGFloat) {
+        self.init(insets: UIEdgeInsets(top: top, left: left, bottom: bottom, right: right))
+    }
+    
+    public convenience init(insetsX: CGFloat, insetsY: CGFloat) {
+        self.init(insets: UIEdgeInsets(top: insetsY, left: insetsX, bottom: insetsY, right: insetsX))
     }
     
     public convenience init<T: MultiRowEntityable>(entity: T) {
