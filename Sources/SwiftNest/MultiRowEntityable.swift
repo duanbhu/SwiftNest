@@ -64,11 +64,7 @@ public extension MultiRowViewContainerable {
             }
         }
         set {
-            objc_setAssociatedObject(
-                self, 
-                &MultiRowDictKey,
-                newValue,
-                .OBJC_ASSOCIATION_RETAIN_NONATOMIC
+            objc_setAssociatedObject(self, &MultiRowDictKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC
             )
         }
     }
