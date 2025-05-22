@@ -130,6 +130,7 @@ public class MultiRowView: UIControl {
         label.textColor = MultiRowConfiguration.default().titleColor
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        label.translatesAutoresizingMaskIntoConstraints = false
         stackView1.addArrangedSubview(label)
         return label
     }()
@@ -180,7 +181,7 @@ public class MultiRowView: UIControl {
         let stackView = UIStackView(arrangedSubviews: [])
         stackView.axis = .horizontal
         stackView.alignment = .center
-        stackView.distribution = .fill
+        stackView.distribution = .equalCentering
         stackView.spacing = 4
         addSubview(stackView)
         return stackView
@@ -298,6 +299,14 @@ public extension MultiRowView {
         iconImageView.image(imageNamed)
         return icon(image, resize: resize)
     }
+    // MARK: - titleLabel
+    @discardableResult
+    func titleWidth(_ width: CGFloat) -> Self {
+        NSLayoutConstraint.activate([
+            titleLabel.widthAnchor.constraint(equalToConstant: width),
+        ])
+        return self
+    }
     
     @discardableResult
     func title(_ title: String, font: UIFont? = nil, color: UIColor? = nil) -> Self {
@@ -329,6 +338,7 @@ public extension MultiRowView {
         return self
     }
     
+    // MARK: - detailsLabel
     @discardableResult
     func details(_ title: String, font: UIFont? = nil, color: UIColor? = nil) -> Self {
         detailsLabel.text = title
@@ -432,6 +442,7 @@ public extension MultiRowView {
             ])
         case .arrow:
             annexButton.setImage(MultiRowConfiguration.default().arrowImage, for: .normal)
+            annexButton.setImage(MultiRowConfiguration.default().arrowImage, for: .selected)
         case .switch:
             annexButton.setImage(MultiRowConfiguration.default().switchOffImage, for: .normal)
             annexButton.setImage(MultiRowConfiguration.default().switchOnImage, for: .selected)
