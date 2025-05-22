@@ -125,7 +125,7 @@ public extension UIView {
 // 分割线
 public extension UIView {
     @discardableResult
-    func addSeparatorLine(color: UIColor = .color("#F0F0F0", alpha: 0.8), thickness: CGFloat = 1, left: CGFloat = 0, right: CGFloat = 0) -> Self {
+    func addSeparatorLine(color: UIColor = .color("#F0F0F0", alpha: 0.8), height: CGFloat = 1, left: CGFloat = 0, right: CGFloat = 0) -> Self {
         guard viewWithTag(4263782) == nil else { return self }
         
         let separatorLine = UIView()
@@ -138,9 +138,14 @@ public extension UIView {
             separatorLine.bottomAnchor.constraint(equalTo: bottomAnchor),
             separatorLine.leadingAnchor.constraint(equalTo: leadingAnchor, constant: left),
             separatorLine.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -right),
-            separatorLine.heightAnchor.constraint(equalToConstant: thickness)
+            separatorLine.heightAnchor.constraint(equalToConstant: height)
         ])
         return self
+    }
+    
+    @discardableResult
+    func addSeparatorLine(color: UIColor = .color("#F0F0F0", alpha: 0.8), height: CGFloat = 1, inset: CGFloat) -> Self {
+        addSeparatorLine(color: color, height: height, left: inset, right: inset)
     }
 }
 

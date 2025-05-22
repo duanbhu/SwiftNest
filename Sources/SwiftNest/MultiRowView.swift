@@ -293,7 +293,11 @@ public extension MultiRowView {
     @discardableResult
     func title(_ title: String, font: UIFont? = nil, color: UIColor? = nil) -> Self {
         titleLabel.text = title
-        
+        return self.title(font: font, color: color)
+    }
+    
+    @discardableResult
+    func title(font: UIFont? = nil, color: UIColor? = nil) -> Self {
         if let font = font {
             titleLabel.font = font
         }
@@ -305,9 +309,25 @@ public extension MultiRowView {
     }
     
     @discardableResult
+    func titleSpecificText(_ text: String, font: UIFont? = nil, color: UIColor? = nil) -> Self {
+        if let font = font {
+            titleLabel.jk.setsetSpecificTextFont(text, font: font)
+        }
+        
+        if let color = color {
+            titleLabel.jk.setSpecificTextColor(text, color: color)
+        }
+        return self.title(font: font, color: color)
+    }
+    
+    @discardableResult
     func details(_ title: String, font: UIFont? = nil, color: UIColor? = nil) -> Self {
         detailsLabel.text = title
-        
+        return self.details(font: font, color: color)
+    }
+    
+    @discardableResult
+    func details(font: UIFont? = nil, color: UIColor? = nil) -> Self {
         if let font = font {
             detailsLabel.font = font
         }
@@ -321,7 +341,11 @@ public extension MultiRowView {
     @discardableResult
     func value(_ title: String, font: UIFont? = nil, color: UIColor? = nil) -> Self {
         valueLabel.text = title
-        
+        return self.value(font: font, color: color)
+    }
+    
+    @discardableResult
+    func value(font: UIFont? = nil, color: UIColor? = nil) -> Self {
         if let font = font {
             valueLabel.font = font
         }
@@ -335,16 +359,15 @@ public extension MultiRowView {
     @discardableResult
     func placeholder(_ placeholder: String, font: UIFont? = nil, color: UIColor? = nil) -> Self {
         textField.placeholder = placeholder
-        
-        if let font = font {
-            textField.font = font
-        }
-        
-        if let color = color {
-            textField.textColor = color
-        }
+        return self.TF(font: font, color: color)
+    }
+    
+    @discardableResult
+    func TF(font: UIFont? = nil, color: UIColor? = nil) -> Self {
+        textField.placeholder = placeholder
         return self
     }
+    
     
     @discardableResult
     func leftStackAxis(_ axis: NSLayoutConstraint.Axis) -> Self {
