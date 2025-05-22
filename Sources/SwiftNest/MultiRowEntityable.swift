@@ -52,7 +52,7 @@ public protocol MultiRowViewContainerable {
 @MainActor fileprivate var MultiRowDictKey: UInt8 = 0
 
 @MainActor
-extension MultiRowViewContainerable {
+public extension MultiRowViewContainerable {
     var rowViewDict: [RowEntity: MultiRowView] {
         get {
             if let dict = objc_getAssociatedObject(self, &MultiRowDictKey) as? [RowEntity: MultiRowView] {
