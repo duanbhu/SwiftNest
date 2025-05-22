@@ -20,33 +20,33 @@ public class MultiRowConfiguration: NSObject {
         MultiRowConfiguration.single = MultiRowConfiguration()
     }
     
-    var themeColor: UIColor = .black
+    public var themeColor: UIColor = .black
     
-    var titleColor: UIColor = .black
-    var titleFont: UIFont = .medium(16)
+    public var titleColor: UIColor = .black
+    public var titleFont: UIFont = .medium(16)
     
-    var detailsColor: UIColor = .black
-    var detailsFont: UIFont = .regular(14)
+    public var detailsColor: UIColor = .black
+    public var detailsFont: UIFont = .regular(14)
     
 //    var placeholderColor: UIColor = .placeholderText
-    var textFieldColor: UIColor = .black
-    var textFieldFont: UIFont = .regular(14)
+    public var textFieldColor: UIColor = .black
+    public var textFieldFont: UIFont = .regular(14)
     
-    var valueColor: UIColor = .gray
-    var valueFont: UIFont = .regular(14)
+    public var valueColor: UIColor = .gray
+    public var valueFont: UIFont = .regular(14)
     
     /// 黑色箭头
-    var arrowImage = UIImage(named: "icon_row_arrow_right_black")
+    public var arrowImage = UIImage(named: "icon_row_arrow_right_black")
     
-    var switchOnImage = UIImage(named: "icon_row_switch_on")
+    public var switchOnImage = UIImage(named: "icon_row_switch_on")
     
-    var switchOffImage = UIImage(named: "icon_row_switch_off")
-    
-    /// 输入密码时，开启/关闭密文的小眼睛
-    var eyeOffImage = UIImage(named: "icon_row_eye_off")
+    public var switchOffImage = UIImage(named: "icon_row_switch_off")
     
     /// 输入密码时，开启/关闭密文的小眼睛
-    var eyeOnImage = UIImage(named: "icon_row_eye_on")
+    public var eyeOffImage = UIImage(named: "icon_row_eye_off")
+    
+    /// 输入密码时，开启/关闭密文的小眼睛
+    public var eyeOnImage = UIImage(named: "icon_row_eye_on")
 }
 
 public extension MultiRowView {
