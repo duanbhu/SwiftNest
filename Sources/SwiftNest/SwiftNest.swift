@@ -42,22 +42,30 @@ public func kSafeAreaInsets() -> UIEdgeInsets {
 
 /// 安全区底部高度
 @MainActor
-public var kSafeAreaInsetBottom = kSafeAreaInsets().bottom
+public var kSafeAreaInsetBottom: CGFloat {
+    return kSafeAreaInsets().bottom
+}
 
 /// 状态栏高度
 @MainActor
-public var kStatusBarHeight = kSafeAreaInsets().top
+public var kStatusBarHeight: CGFloat {
+    return kSafeAreaInsets().top
+}
 
 /// 导航栏高度
 public let kNavHeight = 44.0
 
 /// 导航栏+状态栏高度
 @MainActor
-public var kSafeAreaTopHeight = kNavHeight + kStatusBarHeight
+public var kSafeAreaTopHeight: CGFloat {
+    return kNavHeight + kStatusBarHeight
+}
 
 /// TabBar高度
 public let kTabBarH = 49.0
 
 /// TabBar+安全区高度
 @MainActor
-public var kTabBarHeight = kTabBarH + kStatusBarHeight
+public var kTabBarHeight: CGFloat {
+    return kTabBarH + kStatusBarHeight
+}
