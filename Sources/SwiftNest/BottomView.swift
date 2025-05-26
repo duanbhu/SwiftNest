@@ -101,7 +101,7 @@ public extension BottomView {
         return self
     }
     
-    func addMenuItems(_ views: UIView...) -> Self {
+    func addMenuItems(_ views: UIButton...) -> Self {
         views.forEach {
             stackView.addArrangedSubview($0)
         }

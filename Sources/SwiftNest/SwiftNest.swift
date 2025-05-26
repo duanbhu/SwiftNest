@@ -22,7 +22,7 @@ func kFitSize(w: CGFloat, h: CGFloat) -> CGSize {
 }
 
 @MainActor
-public let kSafeAreaInsets = { () -> UIEdgeInsets in
+public func kSafeAreaInsets() -> UIEdgeInsets {
     var insets = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
     if #available(iOS 13.0, *) {
         let keyWindow = UIApplication.shared.connectedScenes
@@ -41,19 +41,23 @@ public let kSafeAreaInsets = { () -> UIEdgeInsets in
 }
 
 /// 安全区底部高度
-public let kSafeAreaInsetBottom = kSafeAreaInsets().bottom
+@MainActor
+public var kSafeAreaInsetBottom = kSafeAreaInsets().bottom
 
 /// 状态栏高度
-public let kStatusBarHeight = kSafeAreaInsets().top
+@MainActor
+public var kStatusBarHeight = kSafeAreaInsets().top
 
 /// 导航栏高度
 public let kNavHeight = 44.0
 
 /// 导航栏+状态栏高度
-public let kSafeAreaTopHeight = kNavHeight + kStatusBarHeight
+@MainActor
+public var kSafeAreaTopHeight = kNavHeight + kStatusBarHeight
 
 /// TabBar高度
 public let kTabBarH = 49.0
 
 /// TabBar+安全区高度
-public let kTabBarHeight = kTabBarH + kStatusBarHeight
+@MainActor
+public var kTabBarHeight = kTabBarH + kStatusBarHeight
