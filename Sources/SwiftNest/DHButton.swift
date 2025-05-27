@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DHButton: UIButton {
+public class DHButton: UIButton {
     public enum ImagePosition {
         case left // 图片在左，文字在右
         case right // 图片在右，文字在左
