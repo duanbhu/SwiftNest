@@ -118,7 +118,7 @@ public extension MultiRowView {
  |-------------------------------------------------------------------------------- contentStackView -------------------------------------------------------------------------------- |
  */
 public class MultiRowView: UIControl {
-    private(set) lazy var iconImageView: UIImageView  = {
+    public private(set) lazy var iconImageView: UIImageView  = {
         let imageView = UIImageView()
         contentStackView.insertArrangedSubview(imageView, at: 0)
         return imageView
