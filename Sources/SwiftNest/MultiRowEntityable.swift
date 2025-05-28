@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// 创建MultiRowView时，对应的实体类。
 public protocol MultiRowEntityable: Equatable, Hashable {
@@ -21,6 +22,8 @@ public protocol MultiRowEntityable: Equatable, Hashable {
     var placeholder: String? { get }
     
     var trailerType: MultiRowView.TrailerType { get }
+    
+    var insets: UIEdgeInsets? { get }
     
     var height: CGFloat? { get }
 }
@@ -38,6 +41,8 @@ public extension MultiRowEntityable {
     var placeholder: String? { nil }
     
     var trailerType: MultiRowView.TrailerType { .none }
+    
+    var insets: UIEdgeInsets? { nil }
     
     var height: CGFloat? { nil }
 }

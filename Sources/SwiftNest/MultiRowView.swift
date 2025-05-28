@@ -229,7 +229,11 @@ public class MultiRowView: UIControl {
     }
     
     public convenience init<T: MultiRowEntityable>(entity: T) {
-        self.init()
+        if let insets = entity.insets {
+            self.init(insets: insets)
+        } else {
+            self.init()
+        }
         if let icon = entity.icon {
             self.icon(icon)
         }
@@ -280,16 +284,20 @@ public class MultiRowView: UIControl {
 
 public extension MultiRowView {
     @discardableResult
-    func icon(_ image: UIImage?, resize: CGSize? = nil) -> Self {
-        iconImageView.image(image)
-        
-        let size = resize ?? (image?.size ?? .zero)
+    func icon(size: CGSize) -> Self {
         NSLayoutConstraint.deactivate(iconImageView.constraints)
         NSLayoutConstraint.activate([
             iconImageView.widthAnchor.constraint(equalToConstant: size.width),
             iconImageView.heightAnchor.constraint(equalToConstant: size.height)
         ])
         return self
+    }
+    
+    @discardableResult
+    func icon(_ image: UIImage?, resize: CGSize? = nil) -> Self {
+        iconImageView.image(image)
+        let size = resize ?? (image?.size ?? .zero)
+        return icon(size: size)
     }
     
     @discardableResult

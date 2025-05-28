@@ -69,3 +69,41 @@ public let kTabBarH = 49.0
 public var kTabBarHeight: CGFloat {
     return kTabBarH + kStatusBarHeight
 }
+
+//value 是AnyObject类型是因为有可能所传的值不是String类型，有可能是其他任意的类型。
+public func kStringIsEmpty(_ value: String?) -> Bool {
+    //首先判断是否为nil
+    if (nil == value) {
+        //对象是nil，直接认为是空串
+        return true
+    } else {
+        //然后是否可以转化为String
+        guard let value = value else {
+            return true
+        }
+        return value == "" || value == "(null)" || 0 == value.count || value.isEmpty
+    }
+}
+
+public func kStringEmpty(_ value: String?, to s: String) -> String {
+    kStringIsEmpty(value) ? s : value!
+}
+
+public struct SwiftNest {
+
+    private init() { }
+
+    public nonisolated(unsafe) static var defaultVerifyRgex = VerifyRgex()
+}
+
+public struct VerifyRgex: Codable {
+     
+    /// 用户编号的正则
+    public var username = "^[\\da-zA-Z]{6,16}"
+    
+    /// 手机号验证码的正则
+    public var verificationCode = "^[\\da-zA-Z]{4}"
+        
+    /// 身份证号码
+    public var idcard = "^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$"
+}

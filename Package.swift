@@ -12,7 +12,8 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/JoanKing/JKSwiftExtension.git", .upToNextMajor(from: "2.8.3")),
-        .package(url: "https://github.com/ReactiveX/RxSwift.git", .upToNextMajor(from: "6.0.0"))
+        .package(url: "https://github.com/ReactiveX/RxSwift.git", .upToNextMajor(from: "6.0.0")),
+        .package(url: "https://github.com/RxSwiftCommunity/NSObject-Rx.git", .upToNextMajor(from: "5.2.2")),
     ],
     targets: [
         .target(
@@ -22,7 +23,8 @@ let package = Package(
             ]),
         .target(name: "RxSwiftNest", dependencies: [
             "RxSwift",
-            .product(name: "RxCocoa", package: "RxSwift")
+            .product(name: "RxCocoa", package: "RxSwift"),
+            .product(name: "NSObject-Rx", package: "NSObject-Rx")
         ]),
         .testTarget(
             name: "SwiftNestTests",

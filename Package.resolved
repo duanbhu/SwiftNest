@@ -1,5 +1,5 @@
 {
-  "originHash" : "0cd963c55e16d17f6e3cf72d80c99dc2bde088093f8749f3a73eb893c674da21",
+  "originHash" : "353e0bc15745ed8985978456e9378f86089067cc358127e9170a7223fa225dd1",
   "pins" : [
     {
       "identity" : "jkswiftextension",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "60ed6ddc03b541fe251cb0bbc0cca1fea389a4ac",
         "version" : "2.8.3"
+      }
+    },
+    {
+      "identity" : "nsobject-rx",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/RxSwiftCommunity/NSObject-Rx.git",
+      "state" : {
+        "revision" : "6134a640808db7390d3dfcb32ef5f0a12b7a644d",
+        "version" : "5.2.2"
       }
     },
     {

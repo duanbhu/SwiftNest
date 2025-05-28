@@ -122,6 +122,31 @@ public extension UIView {
     }
 }
 
+public extension Array {
+    @MainActor
+    func corner(_ radius: CGFloat) {
+        guard let array = self as? [UIView] else { return  }
+        
+        guard let f = array.first else { return }
+        f.roundCorners(.top(radius: radius))
+        
+        guard let l = array.last else { return }
+        l.roundCorners(.bottom(radius: radius))
+    }
+    
+    @MainActor
+    func cornerHor(_ radius: CGFloat) {
+        guard let array = self as? [UIView] else { return  }
+        
+        guard let f = array.first else { return }
+        f.roundCorners(.left(radius: radius))
+        
+        guard let l = array.last else { return }
+        l.roundCorners(.right(radius: radius))
+    }
+}
+
+
 // 分割线
 public extension UIView {
     @discardableResult
