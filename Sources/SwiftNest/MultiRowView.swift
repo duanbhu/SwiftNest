@@ -189,8 +189,7 @@ public class MultiRowView: UIControl {
     private lazy var contentStackView: UIStackView  = {
         let stackView = UIStackView(arrangedSubviews: [])
         stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.distribution = .equalCentering
+        stackView.alignment = .leading
         stackView.spacing = 4
         addSubview(stackView)
         return stackView
