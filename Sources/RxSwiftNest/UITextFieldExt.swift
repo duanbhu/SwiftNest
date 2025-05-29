@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import NSObject_Rx
+import SwiftNest
 #if !COCOAPODS
 import SwiftNest
 #endif
@@ -69,15 +70,17 @@ public extension UITextField {
     @discardableResult
     func formatPhoneNumber(_ sp: Character = "-") -> Self {
         keyboardType(.phonePad)
-        rx.text.orEmpty.subscribe(onNext: { [weak self] text in
-            guard let self = self else { return }
-            var phoneNumber = text
-            let maxCount = 13
-            if self.markedTextRange == nil, text.count > maxCount {
-                phoneNumber = String(text.prefix(maxCount))
-            }
-            self.text = phoneNumber.formatPhoneNumber(" ")
-        }).disposed(by: rx.disposeBag)
+        rx.text.orEmpty.asDriver()
+            .drive(onNext: { [weak self] text in
+                guard let self = self else { return }
+                var phoneNumber = String(text)
+                let maxCount = 13
+                if self.markedTextRange == nil, text.count > maxCount {
+                    phoneNumber = String(text.prefix(maxCount))
+                }
+                self.text = phoneNumber.formatPhoneNumber(sp)
+            })
+            .disposed(by: rx.disposeBag)
         return self
     }
     

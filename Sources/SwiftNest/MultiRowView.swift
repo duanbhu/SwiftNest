@@ -80,6 +80,15 @@ public extension MultiRowView {
         }
     }
     
+    var detailsAttr: NSAttributedString? {
+        get {
+            return detailsLabel.attributedText
+        }
+        set {
+            detailsLabel.attributedText = newValue
+        }
+    }
+    
     var textFieldText: String? {
         get {
             return textField.text
