@@ -186,7 +186,7 @@ public class MultiRowView: UIControl {
     
     // MARK: - content stackView
     // iconImageView +【stackView1】+【stackView2】
-    private lazy var contentStackView: UIStackView  = {
+    public lazy var contentStackView: UIStackView  = {
         let stackView = UIStackView(arrangedSubviews: [])
         stackView.axis = .horizontal
         stackView.alignment = .leading
@@ -196,7 +196,7 @@ public class MultiRowView: UIControl {
     }()
     
     /// titleLabel + detailsLabel / textField / textView
-    private lazy var stackView1: UIStackView  = {
+    public lazy var stackView1: UIStackView  = {
         let stackView = UIStackView(arrangedSubviews: [])
         stackView.axis = .horizontal
         stackView.alignment = .leading
@@ -207,7 +207,7 @@ public class MultiRowView: UIControl {
     }()
     
     /// valueLabel + annexButton
-    private lazy var stackView2: UIStackView  = {
+    public lazy var stackView2: UIStackView  = {
         let stackView = UIStackView(arrangedSubviews: [])
         stackView.axis = .horizontal
         stackView.alignment = .trailing
