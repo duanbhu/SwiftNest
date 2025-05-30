@@ -59,6 +59,10 @@ public extension MultiRowView {
         case arrow // 箭头
         case `switch`
     }
+    
+    enum TrailerPostion {
+        case top, center, bottom
+    }
 }
 
 public extension MultiRowView {
@@ -195,6 +199,7 @@ public class MultiRowView: UIControl {
         stackView.axis = .horizontal
         stackView.alignment = .leading
         stackView.spacing = 4
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)
         return stackView
     }()
@@ -206,6 +211,7 @@ public class MultiRowView: UIControl {
         stackView.alignment = .leading
         stackView.distribution = .fill
         stackView.spacing = 5
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         contentStackView.addArrangedSubview(stackView)
         return stackView
     }()
@@ -216,6 +222,7 @@ public class MultiRowView: UIControl {
         stackView.axis = .horizontal
         stackView.alignment = .trailing
         stackView.spacing = 5
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         contentStackView.addArrangedSubview(stackView)
         return stackView
     }()
@@ -463,7 +470,8 @@ public extension MultiRowView {
         case .arrow:
             annexButton.setImage(MultiRowConfiguration.default().arrowImage, for: .normal)
             annexButton.setImage(MultiRowConfiguration.default().arrowImage, for: .selected)
-            annexButton.centerYAnchor.constraint(equalTo: stackView2.centerYAnchor).isActive = true
+            trailerSize(CGSize(width: 25, height: 25))
+            trailerPostion(.center)
         case .switch:
             annexButton.setImage(MultiRowConfiguration.default().switchOffImage, for: .normal)
             annexButton.setImage(MultiRowConfiguration.default().switchOnImage, for: .selected)
@@ -498,6 +506,21 @@ public extension MultiRowView {
            annexButton.widthAnchor.constraint(equalToConstant: size.width),
            annexButton.heightAnchor.constraint(equalToConstant: size.height)
         ])
+        return self
+    }
+    
+    @discardableResult
+    func trailerPostion(_ postion: TrailerPostion) -> Self {
+        var constraints: [NSLayoutConstraint] = []
+        switch postion {
+        case .top:
+            break
+        case .center:
+            constraints.append(stackView2.centerYAnchor.constraint(equalTo: contentStackView.centerYAnchor))
+        case .bottom:
+            break
+        }
+        NSLayoutConstraint.activate(constraints)
         return self
     }
     
