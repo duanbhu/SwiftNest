@@ -180,6 +180,8 @@ public class MultiRowView: UIControl {
         button.setTitleColor(MultiRowConfiguration.default().themeColor, for: .normal)
         button.titleLabel?.font = MultiRowConfiguration.default().detailsFont
         button.isUserInteractionEnabled = false
+        button.setContentHuggingPriority(.required, for: .horizontal)
+        button.setContentCompressionResistancePriority(.required, for: .horizontal)
         stackView2.addArrangedSubview(button)
         return button
     }()
@@ -459,6 +461,10 @@ public extension MultiRowView {
         case .arrow:
             annexButton.setImage(MultiRowConfiguration.default().arrowImage, for: .normal)
             annexButton.setImage(MultiRowConfiguration.default().arrowImage, for: .selected)
+            
+            if stackView1.axis == .vertical {
+                textField.centerYAnchor.constraint(equalTo: stackView2.centerYAnchor).isActive = true
+            }
         case .switch:
             annexButton.setImage(MultiRowConfiguration.default().switchOffImage, for: .normal)
             annexButton.setImage(MultiRowConfiguration.default().switchOnImage, for: .selected)
