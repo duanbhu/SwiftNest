@@ -183,6 +183,7 @@ public class MultiRowView: UIControl {
         button.isUserInteractionEnabled = false
         button.setContentHuggingPriority(.required, for: .horizontal)
         button.setContentCompressionResistancePriority(.required, for: .horizontal)
+        button.translatesAutoresizingMaskIntoConstraints = false
         stackView2.addArrangedSubview(button)
         return button
     }()
@@ -462,9 +463,7 @@ public extension MultiRowView {
         case .arrow:
             annexButton.setImage(MultiRowConfiguration.default().arrowImage, for: .normal)
             annexButton.setImage(MultiRowConfiguration.default().arrowImage, for: .selected)
-            if stackView1.axis == .vertical {
-                annexButton.centerYAnchor.constraint(equalTo: stackView2.centerYAnchor).isActive = true
-            }
+            annexButton.centerYAnchor.constraint(equalTo: stackView2.centerYAnchor).isActive = true
         case .switch:
             annexButton.setImage(MultiRowConfiguration.default().switchOffImage, for: .normal)
             annexButton.setImage(MultiRowConfiguration.default().switchOnImage, for: .selected)
@@ -474,6 +473,7 @@ public extension MultiRowView {
     
     @discardableResult
     func trailerType(icon: String? = nil, title: String? = nil) -> Self {
+        annexButton.isHidden = false
         annexButton.setTitle(title, for: .normal)
         if let icon = icon {
             annexButton.setImage(.init(named: icon), for: .normal)
@@ -485,8 +485,19 @@ public extension MultiRowView {
     
     @discardableResult
     func trailerType(icon: String, selectIcon: String) -> Self {
+        annexButton.isHidden = false
         annexButton.setImage(.init(named: icon), for: .normal)
         annexButton.setImage(.init(named: icon), for: .selected)
+        return self
+    }
+
+    @discardableResult
+    func trailerSize(_ size: CGSize) -> Self {
+        annexButton.isHidden = false
+        NSLayoutConstraint.activate([
+           annexButton.widthAnchor.constraint(equalToConstant: size.width),
+           annexButton.heightAnchor.constraint(equalToConstant: size.height)
+        ])
         return self
     }
     
