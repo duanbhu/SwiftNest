@@ -171,7 +171,7 @@ public class MultiRowView: UIControl {
         let label = UILabel()
         label.font = MultiRowConfiguration.default().valueFont
         label.textColor = MultiRowConfiguration.default().valueColor
-        label.textAlignment =.right
+        label.textAlignment = .right
         stackView2.addArrangedSubview(label)
         return label
     }()
