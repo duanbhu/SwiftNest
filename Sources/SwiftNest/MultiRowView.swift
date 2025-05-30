@@ -461,9 +461,8 @@ public extension MultiRowView {
         case .arrow:
             annexButton.setImage(MultiRowConfiguration.default().arrowImage, for: .normal)
             annexButton.setImage(MultiRowConfiguration.default().arrowImage, for: .selected)
-            
             if stackView1.axis == .vertical {
-                textField.centerYAnchor.constraint(equalTo: stackView2.centerYAnchor).isActive = true
+                annexButton.centerYAnchor.constraint(equalTo: stackView2.centerYAnchor).isActive = true
             }
         case .switch:
             annexButton.setImage(MultiRowConfiguration.default().switchOffImage, for: .normal)
