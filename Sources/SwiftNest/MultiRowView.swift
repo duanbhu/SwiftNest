@@ -428,12 +428,12 @@ public extension MultiRowView {
     }
     
     @discardableResult
-    func leftStackAxis(_ axis: NSLayoutConstraint.Axis, rightMargin: CGFloat = MultiRowConfiguration.default().insets.right) -> Self {
+    func leftStackAxis(_ axis: NSLayoutConstraint.Axis) -> Self {
         stackView1.axis = axis
         switch axis {
         case .horizontal:
             stackView1.alignment = .center
-        case .vertical:
+        case _:
             stackView1.alignment = .leading
         }
         return self
