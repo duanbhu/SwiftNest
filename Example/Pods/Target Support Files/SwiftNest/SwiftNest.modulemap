@@ -1,0 +1,6 @@
+framework module SwiftNest {
+  umbrella header "SwiftNest-umbrella.h"
+
+  export *
+  module * { export * }
+}

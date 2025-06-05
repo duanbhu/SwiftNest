@@ -1,0 +1,35 @@
+{
+  "name": "SwiftNest",
+  "version": "0.1.0",
+  "summary": "A short description of SwiftNest.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/duanbhu/SwiftNest",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "duanbhu": "310701836@qq.com"
+  },
+  "source": {
+    "git": "https://github.com/duanbhu/SwiftNest.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "13.0"
+  },
+  "source_files": "Sources/**/*",
+  "frameworks": "UIKit",
+  "dependencies": {
+    "JKSwiftExtension": [
+      "~> 2.8.3"
+    ],
+    "RxSwift": [
+      "~> 6.0.0"
+    ],
+    "RxCocoa": [
+      "~> 6.0.0"
+    ],
+    "NSObject+Rx": []
+  }
+}

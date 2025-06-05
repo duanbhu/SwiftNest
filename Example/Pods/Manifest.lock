@@ -1,0 +1,46 @@
+PODS:
+  - JKSwiftExtension (2.8.3)
+  - "NSObject+Rx (5.2.1)":
+    - RxSwift (~> 6.0)
+  - RxCocoa (6.0.0):
+    - RxRelay (= 6.0.0)
+    - RxSwift (= 6.0.0)
+  - RxRelay (6.0.0):
+    - RxSwift (= 6.0.0)
+  - RxSwift (6.0.0)
+  - SnapKit (5.7.1)
+  - SwiftNest (0.1.0):
+    - JKSwiftExtension (~> 2.8.3)
+    - "NSObject+Rx"
+    - RxCocoa (~> 6.0.0)
+    - RxSwift (~> 6.0.0)
+
+DEPENDENCIES:
+  - SnapKit
+  - SwiftNest (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - JKSwiftExtension
+    - "NSObject+Rx"
+    - RxCocoa
+    - RxRelay
+    - RxSwift
+    - SnapKit
+
+EXTERNAL SOURCES:
+  SwiftNest:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  JKSwiftExtension: a99f70bf29da698242ca03362345aee7b60f6373
+  "NSObject+Rx": 49ffbf55ad0bbc29a44547db63a9e33caf0c5d60
+  RxCocoa: 3f79328fafa3645b34600f37c31e64c73ae3a80e
+  RxRelay: 8d593be109c06ea850df027351beba614b012ffb
+  RxSwift: c14e798c59b9f6e9a2df8fd235602e85cc044295
+  SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
+  SwiftNest: b0eef13c1425af8f61b7602976008aadda350f39
+
+PODFILE CHECKSUM: 2032ec1f321ee11a184d56cd813f603db434c149
+
+COCOAPODS: 1.16.2

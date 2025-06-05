@@ -7,10 +7,9 @@
 
 import UIKit
 
-@MainActor
 public class MultiRowConfiguration: NSObject {
     
-    private static var single = MultiRowConfiguration()
+    nonisolated(unsafe) private static var single = MultiRowConfiguration()
     
     public class func `default`() -> MultiRowConfiguration {
         MultiRowConfiguration.single
@@ -60,8 +59,8 @@ public extension MultiRowView {
         case `switch`
     }
     
-    enum TrailerPostion {
-        case top, center, bottom
+    enum TrailerVerAlign {
+        case parent, title, details, textField
     }
 }
 
@@ -133,7 +132,8 @@ public extension MultiRowView {
 public class MultiRowView: UIControl {
     public private(set) lazy var iconImageView: UIImageView  = {
         let imageView = UIImageView()
-        contentStackView.insertArrangedSubview(imageView, at: 0)
+        leadStackView.insertArrangedSubview(imageView, at: 0)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
@@ -152,7 +152,8 @@ public class MultiRowView: UIControl {
         let label = UILabel()
         label.font = MultiRowConfiguration.default().detailsFont
         label.textColor = MultiRowConfiguration.default().detailsColor
-        label.numberOfLines = 0
+        label.setContentHuggingPriority(.required, for: .horizontal)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
         stackView1.addArrangedSubview(label)
         return label
     }()
@@ -176,7 +177,7 @@ public class MultiRowView: UIControl {
         label.font = MultiRowConfiguration.default().valueFont
         label.textColor = MultiRowConfiguration.default().valueColor
         label.textAlignment = .right
-        stackView2.addArrangedSubview(label)
+        label.isHidden(true)
         return label
     }()
     
@@ -188,17 +189,30 @@ public class MultiRowView: UIControl {
         button.setContentHuggingPriority(.required, for: .horizontal)
         button.setContentCompressionResistancePriority(.required, for: .horizontal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        stackView2.addArrangedSubview(button)
+        button.isHidden(true)
         return button
     }()
     
     // MARK: - content stackView
-    // iconImageView +【stackView1】+【stackView2】
-    public lazy var contentStackView: UIStackView  = {
+    
+    public lazy var leadStackView: UIStackView  = {
         let stackView = UIStackView(arrangedSubviews: [])
         stackView.axis = .horizontal
         stackView.alignment = .leading
-        stackView.spacing = 4
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 5
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(stackView)
+        return stackView
+    }()
+    
+    /// valueLabel + annexButton
+    public lazy var trailStackView: UIStackView  = {
+        let stackView = UIStackView(arrangedSubviews: [valueLabel, annexButton])
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.distribution = .fill
+        stackView.spacing = 5
         stackView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)
         return stackView
@@ -208,22 +222,11 @@ public class MultiRowView: UIControl {
     public lazy var stackView1: UIStackView  = {
         let stackView = UIStackView(arrangedSubviews: [])
         stackView.axis = .horizontal
-        stackView.alignment = .leading
-        stackView.distribution = .fill
+        stackView.alignment = .center
+        stackView.distribution = .equalCentering
         stackView.spacing = 5
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        contentStackView.addArrangedSubview(stackView)
-        return stackView
-    }()
-    
-    /// valueLabel + annexButton
-    public lazy var stackView2: UIStackView  = {
-        let stackView = UIStackView(arrangedSubviews: [])
-        stackView.axis = .horizontal
-        stackView.alignment = .trailing
-        stackView.spacing = 5
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        contentStackView.addArrangedSubview(stackView)
+        leadStackView.addArrangedSubview(stackView)
+        stackView.centerYAnchor.constraint(equalTo: iconImageView.centerYAnchor).isActive = true
         return stackView
     }()
     
@@ -282,6 +285,8 @@ public class MultiRowView: UIControl {
         }
     }
     
+    private var trailStackViewCenterY_lc: NSLayoutConstraint?
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -291,12 +296,19 @@ public class MultiRowView: UIControl {
     }
     
     func updateLayoutContentViews() {
-        contentStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: insets.top),
-            contentStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left),
-            contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right),
-            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom)
+            leadStackView.topAnchor.constraint(equalTo: topAnchor, constant: insets.top),
+            leadStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left),
+            leadStackView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -insets.right),
+            leadStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom)
+        ])
+        
+        // 默认垂直居中
+        trailStackViewCenterY_lc = trailStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
+        NSLayoutConstraint.activate([
+            trailStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right),
+            trailStackView.leadingAnchor.constraint(greaterThanOrEqualTo: leadStackView.trailingAnchor, constant: 5),
+            trailStackViewCenterY_lc!
         ])
     }
 }
@@ -387,6 +399,7 @@ public extension MultiRowView {
     @discardableResult
     func value(_ title: String, font: UIFont? = nil, color: UIColor? = nil) -> Self {
         valueLabel.text = title
+        valueLabel.isHidden(false)
         return self.value(font: font, color: color)
     }
     
@@ -414,10 +427,15 @@ public extension MultiRowView {
         return self
     }
     
-    
     @discardableResult
-    func leftStackAxis(_ axis: NSLayoutConstraint.Axis) -> Self {
+    func leftStackAxis(_ axis: NSLayoutConstraint.Axis, rightMargin: CGFloat = MultiRowConfiguration.default().insets.right) -> Self {
         stackView1.axis = axis
+        switch axis {
+        case .horizontal:
+            stackView1.alignment = .center
+        case .vertical:
+            stackView1.alignment = .leading
+        }
         return self
     }
     
@@ -447,7 +465,7 @@ public extension MultiRowView {
             
             if stackView1.axis == .vertical {
                 // 按钮与textField居中对齐
-                contentStackView.alignment = .lastBaseline
+                trailerVerAlign(.textField)
             }
             NSLayoutConstraint.activate([
                 annexButton.widthAnchor.constraint(equalToConstant: 22)
@@ -455,13 +473,9 @@ public extension MultiRowView {
         case .verificationCode:
             annexButton.setTitleColor(MultiRowConfiguration.default().themeColor, for: .normal)
             annexButton.setTitle("获取验证码", for: .normal)
-            
             if stackView1.axis == .vertical {
                 // 按钮与textField居中对齐
-                contentStackView.alignment = .lastBaseline
-                NSLayoutConstraint.activate([
-                    textField.heightAnchor.constraint(equalTo: stackView2.heightAnchor)
-                ])
+                trailerVerAlign(.textField)
             }
             NSLayoutConstraint.activate([
                 annexButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 70),
@@ -471,7 +485,6 @@ public extension MultiRowView {
             annexButton.setImage(MultiRowConfiguration.default().arrowImage, for: .normal)
             annexButton.setImage(MultiRowConfiguration.default().arrowImage, for: .selected)
             trailerSize(CGSize(width: 25, height: 25))
-            trailerPostion(.center)
         case .switch:
             annexButton.setImage(MultiRowConfiguration.default().switchOffImage, for: .normal)
             annexButton.setImage(MultiRowConfiguration.default().switchOnImage, for: .selected)
@@ -510,29 +523,30 @@ public extension MultiRowView {
     }
     
     @discardableResult
-    func trailerPostion(_ postion: TrailerPostion) -> Self {
-        var constraints: [NSLayoutConstraint] = []
-        switch postion {
-        case .top:
-            break
-        case .center:
-            constraints.append(stackView2.centerYAnchor.constraint(equalTo: contentStackView.centerYAnchor))
-        case .bottom:
-            break
+    func trailerVerAlign(_ align: TrailerVerAlign) -> Self {
+        trailStackViewCenterY_lc?.isActive = false
+        switch align {
+        case .parent:
+            trailStackViewCenterY_lc?.isActive = true
+        case .title:
+            trailStackView.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor).isActive = true
+        case .details:
+            trailStackView.centerYAnchor.constraint(equalTo: detailsLabel.centerYAnchor).isActive = true
+        case .textField:
+            trailStackView.centerYAnchor.constraint(equalTo: textField.centerYAnchor).isActive = true
         }
-        NSLayoutConstraint.activate(constraints)
         return self
     }
     
     /// stackView2与Title水平对齐
     func centerYByTitle() {
-        stackView2.removeFromSuperview()
-        self.addSubview(stackView2)
-        stackView2.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            stackView2.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            stackView2.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right)
-        ])
+//        stackView2.removeFromSuperview()
+//        self.addSubview(stackView2)
+//        stackView2.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            stackView2.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
+//            stackView2.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right)
+//        ])
     }
     
     /// 点击切换密码输入窗是否是密文
