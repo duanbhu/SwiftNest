@@ -21,7 +21,7 @@ public protocol MultiRowEntityable: Equatable, Hashable {
         
     var placeholder: String? { get }
     
-    var trailerType: MultiRowView.TrailerType { get }
+    var trailerType: MultiTrailerType { get }
     
     var insets: UIEdgeInsets? { get }
     
@@ -40,7 +40,7 @@ public extension MultiRowEntityable {
         
     var placeholder: String? { nil }
     
-    var trailerType: MultiRowView.TrailerType { .none }
+    var trailerType: MultiTrailerType { .none }
     
     var insets: UIEdgeInsets? { nil }
     

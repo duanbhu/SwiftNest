@@ -37,7 +37,7 @@ public class MultiRowConfiguration: NSObject {
     public var valueFont: UIFont = .regular(14)
     
     /// 黑色箭头
-    public var arrowImage = UIImage(named: "icon_row_arrow_right_black")
+    public var arrowImage = UIImage(named: "icon_row_arrow_right")
     
     public var switchOnImage = UIImage(named: "icon_row_switch_on")
     
@@ -50,15 +50,17 @@ public class MultiRowConfiguration: NSObject {
     public var eyeOnImage = UIImage(named: "icon_row_eye_on")
 }
 
+public enum MultiTrailerType {
+    case none
+    case password // 密码输入框
+    case verificationCode  // 获取验证码
+    case arrow // 箭头
+    case `switch`
+    case icon(UIImage?)
+    case icon2(UIImage?, UIImage?)
+}
+
 public extension MultiRowView {
-    enum TrailerType {
-        case none
-        case password // 密码输入框
-        case verificationCode  // 获取验证码
-        case arrow // 箭头
-        case `switch`
-    }
-    
     enum TrailerVerAlign {
         case parent, title, details, textField
     }
@@ -167,12 +169,12 @@ public class MultiRowView: UIControl {
         return textField
     }()
     
-    private(set) lazy var textView: UITextView = {
+    public private(set) lazy var textView: UITextView = {
         let textView = UITextView()
         return textView
     }()
     
-    private(set) lazy var valueLabel: UILabel = {
+    public private(set) lazy var valueLabel: UILabel = {
         let label = UILabel()
         label.font = MultiRowConfiguration.default().valueFont
         label.textColor = MultiRowConfiguration.default().valueColor
@@ -452,10 +454,11 @@ public extension MultiRowView {
     }
     
     @discardableResult
-    func trailerType(_ trailerType: TrailerType) -> Self {
-        annexButton.isHidden = trailerType == .none
+    func trailerType(_ trailerType: MultiTrailerType) -> Self {
+        annexButton.isHidden = false
         switch trailerType {
-        case .none: break
+        case .none:
+            annexButton.isHidden = true
         case .password:
             textField.isSecureTextEntry = true
             annexButton.setImage(MultiRowConfiguration.default().eyeOffImage, for: .normal)
@@ -488,6 +491,11 @@ public extension MultiRowView {
         case .switch:
             annexButton.setImage(MultiRowConfiguration.default().switchOffImage, for: .normal)
             annexButton.setImage(MultiRowConfiguration.default().switchOnImage, for: .selected)
+        case .icon(let image):
+            self.trailerType(.icon2(image, image))
+        case let .icon2(image, image2):
+            annexButton.setImage(image, for: .normal)
+            annexButton.setImage(image2, for: .selected)
         }
         return self
     }
@@ -536,17 +544,6 @@ public extension MultiRowView {
             trailStackView.centerYAnchor.constraint(equalTo: textField.centerYAnchor).isActive = true
         }
         return self
-    }
-    
-    /// stackView2与Title水平对齐
-    func centerYByTitle() {
-//        stackView2.removeFromSuperview()
-//        self.addSubview(stackView2)
-//        stackView2.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            stackView2.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-//            stackView2.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right)
-//        ])
     }
     
     /// 点击切换密码输入窗是否是密文

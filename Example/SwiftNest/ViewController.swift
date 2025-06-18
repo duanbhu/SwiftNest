@@ -65,7 +65,7 @@ class ViewController: UIViewController {
                 rowView
                     .icon(size: CGSize(width: 55, height: 55))
                     .details("我是 DeepSeek，很高兴见到你！")
-                    .trailerType(.arrow)
+                    .trailerType(.deepArrow)
                 
                 rowView.iconImageView.corner(27.5)
                     .backgroundColor(.green)
@@ -99,6 +99,8 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
 }
 
+extension MultiTrailerType {
+    static var deepArrow: MultiTrailerType = .icon(UIImage(named: "icon_row_arrow_right_deep"))
+}
