@@ -343,7 +343,7 @@ public class MultiRowView: UIControl {
             trailStackViewCenterY_lc!
         ])
     }
-    
+    /*
     // 标记触摸开始的位置
     public var touchInside2 = false
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -375,6 +375,7 @@ public class MultiRowView: UIControl {
         isHighlighted = false
         touchInside2 = false
     }
+     */
 }
 
 public extension MultiRowView {
