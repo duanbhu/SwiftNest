@@ -54,7 +54,7 @@ public protocol MultiRowViewContainerable {
     var rowViewDict: [RowEntity: MultiRowView] { get set }
 }
 
-@MainActor fileprivate var MultiRowDictKey: UInt8 = 0
+nonisolated(unsafe) fileprivate var MultiRowDictKey: UInt8 = 0
 
 @MainActor
 public extension MultiRowViewContainerable {

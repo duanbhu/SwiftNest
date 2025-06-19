@@ -14,6 +14,11 @@ import SwiftNest
 
 @MainActor
 public extension Reactive where Base: MultiRowView {
+    /// MultiRowView. tap
+    var tap: ControlEvent<Void> {
+        controlEvent(.touchUpInside)
+    }
+    
     /// annexButton.rx.tap
     var buttonTap: ControlEvent<Void> {
         base.annexButton.isUserInteractionEnabled(true)
