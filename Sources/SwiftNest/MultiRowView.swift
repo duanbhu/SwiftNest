@@ -264,9 +264,14 @@ public class MultiRowView: UIControl {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = 5
         leadStackView.addArrangedSubview(stackView)
-        stackView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        
+        // 居中显示，（有些问题，需要调整）
+        titleCenterY_lc = stackView.centerYAnchor.constraint(equalTo: centerYAnchor)
+        titleCenterY_lc?.isActive = true
         return stackView
     }()
+    
+    private var titleCenterY_lc: NSLayoutConstraint?
     
     public override var isSelected: Bool {
         didSet {
@@ -481,7 +486,6 @@ public extension MultiRowView {
     @discardableResult
     func value(_ title: String, font: UIFont? = nil, color: UIColor? = nil) -> Self {
         valueLabel.text = title
-        valueLabel.isHidden(false)
         return self.value(font: font, color: color)
     }
     
@@ -494,6 +498,7 @@ public extension MultiRowView {
         if let color = color {
             valueLabel.textColor = color
         }
+        valueLabel.isHidden(false)
         return self
     }
     
@@ -623,6 +628,12 @@ public extension MultiRowView {
         case .textField:
             trailStackView.centerYAnchor.constraint(equalTo: textField.centerYAnchor).isActive = true
         }
+        return self
+    }
+    
+    @discardableResult
+    func deactivateTitleCenterY() -> Self {
+        titleCenterY_lc?.isActive = false
         return self
     }
     
