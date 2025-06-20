@@ -56,7 +56,6 @@ public protocol MultiRowViewContainerable {
 
 nonisolated(unsafe) fileprivate var MultiRowDictKey: UInt8 = 0
 
-@MainActor
 public extension MultiRowViewContainerable {
     var rowViewDict: [RowEntity: MultiRowView] {
         get {
@@ -81,7 +80,7 @@ public extension MultiRowViewContainerable {
     ///   - entities: 实体列表
     ///   - configBlock: 自定义回调
     /// - Returns: MultiRowView List
-    @MainActor func rowViews(at entities: [RowEntity], configBlock:((RowEntity, MultiRowView) -> ())? = nil) -> [MultiRowView] {
+    func rowViews(at entities: [RowEntity], configBlock:((RowEntity, MultiRowView) -> ())? = nil) -> [MultiRowView] {
         var mutaSelf = self
         var rowViews: [MultiRowView] = []
         for entity in entities {

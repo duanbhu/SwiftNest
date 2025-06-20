@@ -48,6 +48,9 @@ public class MultiRowConfiguration: NSObject {
     
     /// 输入密码时，开启/关闭密文的小眼睛
     public var eyeOnImage = UIImage(named: "icon_row_eye_on")
+    
+    /// 问号按钮
+    public var questionMarkImage = UIImage(named: "icon_row_question_mark")
 }
 
 public enum MultiTrailerType {
@@ -157,7 +160,7 @@ public class MultiRowView: UIControl {
         return imageView
     }()
     
-    private(set) lazy var titleLabel: UILabel = {
+    public private(set) lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = MultiRowConfiguration.default().titleFont
         label.textColor = MultiRowConfiguration.default().titleColor
@@ -168,7 +171,7 @@ public class MultiRowView: UIControl {
         return label
     }()
     
-    private(set) lazy var detailsLabel: UILabel = {
+    public private(set) lazy var detailsLabel: UILabel = {
         let label = UILabel()
         label.font = MultiRowConfiguration.default().detailsFont
         label.textColor = MultiRowConfiguration.default().detailsColor
@@ -215,6 +218,15 @@ public class MultiRowView: UIControl {
         button.setContentCompressionResistancePriority(.required, for: .horizontal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isHidden(true)
+        return button
+    }()
+    
+    /// 问号按钮
+    public private(set) lazy var questionButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(MultiRowConfiguration.default().questionMarkImage, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(button)
         return button
     }()
     
@@ -461,6 +473,11 @@ public extension MultiRowView {
         return self
     }
     
+    func detailsLine(_ line: Int) -> Self {
+        detailsLabel.numberOfLines = line
+        return self
+    }
+    
     @discardableResult
     func value(_ title: String, font: UIFont? = nil, color: UIColor? = nil) -> Self {
         valueLabel.text = title
@@ -613,5 +630,17 @@ public extension MultiRowView {
     @objc private func tapEyeButton(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         textField.isSecureTextEntry = !sender.isSelected
+    }
+    
+    @discardableResult
+    func addQuestionMarkImage(follow view: UIView? = nil) -> Self {
+        let followView = view ?? titleLabel
+        NSLayoutConstraint.activate([
+            questionButton.widthAnchor.constraint(equalToConstant: 16),
+            questionButton.heightAnchor.constraint(equalToConstant: 16),
+            followView.centerYAnchor.constraint(equalTo: questionButton.centerYAnchor),
+            questionButton.leadingAnchor.constraint(equalTo: followView.trailingAnchor, constant: 8)
+        ])
+        return self
     }
 }
