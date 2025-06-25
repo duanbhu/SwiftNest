@@ -20,6 +20,27 @@ public class BottomView: UIView {
         return stackView
     }()
     
+    /// 全选按钮
+    public private(set) lazy var selectAllButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "icon_order_check_off"), for: .normal)
+        button.setImage(UIImage(named: "icon_order_check_on"), for: .selected)
+        button.contentHorizontalAlignment = .left
+        button.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(button)
+        
+        NSLayoutConstraint.activate([
+            button.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            button.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            button.widthAnchor.constraint(greaterThanOrEqualToConstant: 70),
+            button.heightAnchor.constraint(equalToConstant: 40)
+        ])
+        return button
+    }()
+    
+    /// 只有大于0时生效
+    private var itemWidth: CGFloat = -1
+    
     var menuItems: [UIView] = []
     
     public init(height: CGFloat = 52.wpt) {
@@ -95,6 +116,16 @@ public extension BottomView {
         return stack(insets: .init(top: insetsY, left: insetsX, bottom: insetsY, right: insetsX))
     }
     
+    func stack(right: CGFloat, insetsY: CGFloat, itemWidth: CGFloat = -1) -> Self {
+        self.itemWidth = itemWidth
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: insetsY),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -right),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -insetsY),
+        ])
+        return self
+    }
+    
     func stack(spacing: CGFloat, distribution: UIStackView.Distribution = .fillEqually) -> Self {
         stackView.spacing = spacing
         stackView.distribution = distribution
@@ -103,6 +134,10 @@ public extension BottomView {
     
     func addMenuItems(_ views: UIButton...) -> Self {
         views.forEach {
+            if itemWidth > 0 {
+                $0.translatesAutoresizingMaskIntoConstraints = false
+                $0.widthAnchor.constraint(equalToConstant: itemWidth).isActive = true
+            }
             stackView.addArrangedSubview($0)
         }
         return self
