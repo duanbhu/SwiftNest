@@ -41,10 +41,13 @@ public class BottomView: UIView {
     /// 只有大于0时生效
     private var itemWidth: CGFloat = -1
     
+    private let insetBottom: CGFloat
+    
     var menuItems: [UIView] = []
     
     public init(height: CGFloat = 52.wpt, insetBottom: CGFloat? = nil) {
         let inset = insetBottom ?? kSafeAreaInsetBottom
+        self.insetBottom = inset
         super.init(frame: CGRect(x: 0, y: 0, width: kScreenWidth, height: height + inset))
         makeUI()
     }
@@ -74,7 +77,7 @@ public class BottomView: UIView {
         contentView.addSubview(stackView)
         
         NSLayoutConstraint.activate([
-            safeAreaView.heightAnchor.constraint(equalToConstant: kSafeAreaInsetBottom),
+            safeAreaView.heightAnchor.constraint(equalToConstant: insetBottom),
             safeAreaView.leadingAnchor.constraint(equalTo: leadingAnchor),
             safeAreaView.bottomAnchor.constraint(equalTo: bottomAnchor),
             safeAreaView.trailingAnchor.constraint(equalTo: trailingAnchor)
