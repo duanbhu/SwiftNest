@@ -43,8 +43,9 @@ public class BottomView: UIView {
     
     var menuItems: [UIView] = []
     
-    public init(height: CGFloat = 52.wpt) {
-        super.init(frame: CGRect(x: 0, y: 0, width: kScreenWidth, height: height + kSafeAreaInsetBottom))
+    public init(height: CGFloat = 52.wpt, insetBottom: CGFloat? = nil) {
+        let inset = insetBottom ?? kSafeAreaInsetBottom
+        super.init(frame: CGRect(x: 0, y: 0, width: kScreenWidth, height: height + inset))
         makeUI()
     }
     

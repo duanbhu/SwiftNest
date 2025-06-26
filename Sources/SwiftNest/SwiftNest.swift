@@ -67,7 +67,7 @@ public let kTabBarH = 49.0
 /// TabBar+安全区高度
 @MainActor
 public var kTabBarHeight: CGFloat {
-    return kTabBarH + kStatusBarHeight
+    return kTabBarH + kSafeAreaInsetBottom
 }
 
 //value 是AnyObject类型是因为有可能所传的值不是String类型，有可能是其他任意的类型。
