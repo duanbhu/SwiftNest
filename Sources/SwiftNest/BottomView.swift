@@ -93,6 +93,7 @@ public class BottomView: UIView {
 }
 
 public extension BottomView {
+    @discardableResult
     func add(in superview: UIView) -> Self {
         superview.addSubview(self)
         let height = self.jk.height
@@ -106,6 +107,7 @@ public extension BottomView {
         return self
     }
     
+    @discardableResult
     func stack(insets: UIEdgeInsets) -> Self {
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: insets.top),
@@ -116,10 +118,12 @@ public extension BottomView {
         return self
     }
     
+    @discardableResult
     func stack(insetsX: CGFloat, insetsY: CGFloat) -> Self {
         return stack(insets: .init(top: insetsY, left: insetsX, bottom: insetsY, right: insetsX))
     }
     
+    @discardableResult
     func stack(right: CGFloat, insetsY: CGFloat, itemWidth: CGFloat = -1) -> Self {
         self.itemWidth = itemWidth
         NSLayoutConstraint.activate([
@@ -130,13 +134,27 @@ public extension BottomView {
         return self
     }
     
+    @discardableResult
     func stack(spacing: CGFloat, distribution: UIStackView.Distribution = .fillEqually) -> Self {
         stackView.spacing = spacing
         stackView.distribution = distribution
         return self
     }
     
+    @discardableResult
     func addMenuItems(_ views: UIButton...) -> Self {
+        views.forEach {
+            if itemWidth > 0 {
+                $0.translatesAutoresizingMaskIntoConstraints = false
+                $0.widthAnchor.constraint(equalToConstant: itemWidth).isActive = true
+            }
+            stackView.addArrangedSubview($0)
+        }
+        return self
+    }
+    
+    @discardableResult
+    func addMenuItems(_ views: [UIButton]) -> Self {
         views.forEach {
             if itemWidth > 0 {
                 $0.translatesAutoresizingMaskIntoConstraints = false
