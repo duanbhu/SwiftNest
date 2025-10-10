@@ -38,12 +38,22 @@ public class BottomView: UIView {
         return button
     }()
     
+    public var isSelectAll: Bool {
+        set {
+            selectAllButton.isSelected = newValue
+        }
+        
+        get {
+            selectAllButton.isSelected
+        }
+    }
+    
     /// 只有大于0时生效
     private var itemWidth: CGFloat = -1
     
     private let insetBottom: CGFloat
     
-    var menuItems: [UIView] = []
+    public var menuItems: [UIButton] = []
     
     public init(height: CGFloat = 52.wpt, insetBottom: CGFloat? = nil) {
         let inset = insetBottom ?? kSafeAreaInsetBottom
@@ -142,26 +152,22 @@ public extension BottomView {
     }
     
     @discardableResult
-    func addMenuItems(_ views: UIButton...) -> Self {
-        views.forEach {
+    func addMenuItems(_ views: [UIButton]) -> Self {
+        menuItems = views
+        views.forEach { view in
+            view.translatesAutoresizingMaskIntoConstraints = false
             if itemWidth > 0 {
-                $0.translatesAutoresizingMaskIntoConstraints = false
-                $0.widthAnchor.constraint(equalToConstant: itemWidth).isActive = true
+                NSLayoutConstraint.activate([
+                    view.widthAnchor.constraint(equalToConstant: itemWidth)
+                ])
             }
-            stackView.addArrangedSubview($0)
+            stackView.addArrangedSubview(view)
         }
         return self
     }
     
     @discardableResult
-    func addMenuItems(_ views: [UIButton]) -> Self {
-        views.forEach {
-            if itemWidth > 0 {
-                $0.translatesAutoresizingMaskIntoConstraints = false
-                $0.widthAnchor.constraint(equalToConstant: itemWidth).isActive = true
-            }
-            stackView.addArrangedSubview($0)
-        }
-        return self
+    func addMenuItems(_ views: UIButton...) -> Self {
+        return addMenuItems(views)
     }
 }
