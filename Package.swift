@@ -22,6 +22,7 @@ let package = Package(
                 .product(name: "JKSwiftExtension", package: "JKSwiftExtension")
             ]),
         .target(name: "RxSwiftNest", dependencies: [
+            "SwiftNest",
             "RxSwift",
             .product(name: "RxCocoa", package: "RxSwift"),
             .product(name: "NSObject-Rx", package: "NSObject-Rx")
