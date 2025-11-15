@@ -4,9 +4,6 @@
 //
 //  Created by Duanhu on 2025/5/28.
 //
-#if !COCOAPODS
-import SwiftNest
-#endif
 
 public extension MultiRowView {
     @discardableResult

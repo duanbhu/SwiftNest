@@ -9,10 +9,6 @@ import UIKit
 import RxSwift
 import RxCocoa
 import NSObject_Rx
-import SwiftNest
-#if !COCOAPODS
-import SwiftNest
-#endif
 
 public enum TextInputType {
     case password, verificationCode, phoneNumber, username

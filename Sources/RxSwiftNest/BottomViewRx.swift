@@ -8,9 +8,6 @@
 import UIKit
 import RxSwift
 import RxCocoa
-#if !COCOAPODS
-import SwiftNest
-#endif
 
 @MainActor
 public extension Reactive where Base: BottomView {
