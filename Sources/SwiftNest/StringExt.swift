@@ -107,7 +107,8 @@ public extension String {
     
     /// 密码
     var isPassword: Bool {
-//        let rgex = "^[\\da-zA-Z]{6,16}"
+        let rgex = SwiftNest.defaultVerifyRgex.password
+        guard rgex.isEmpty else { return predicateValue(rgex: rgex) }
         return self.count > 0
     }
     

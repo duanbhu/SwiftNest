@@ -106,4 +106,7 @@ public struct VerifyRgex: Codable {
         
     /// 身份证号码
     public var idcard = "^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$"
+    
+    /// 密码的正则： 6-16位的数字+英文字母，如果为空时，则isPassword仅判断是否为空
+    public var password = "^[\\da-zA-Z]{6,16}"
 }
