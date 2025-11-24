@@ -12,7 +12,7 @@ public extension MultiRowView {
     }
     
     @discardableResult
-    func limit(_ maxCount: Int, _ type: TextInputViewType) -> Self {
+    func limit(_ maxCount: Int, _ type: TextInputViewType = .textField) -> Self {
         switch type {
         case .textField:
             textField.limit(maxCount)
@@ -23,7 +23,7 @@ public extension MultiRowView {
     }
     
     @discardableResult
-    func limit(_ maxCount: Int, allowedCharacters: String, _ type: TextInputViewType) -> Self {
+    func limit(_ maxCount: Int, allowedCharacters: String, _ type: TextInputViewType = .textField) -> Self {
         switch type {
         case .textField:
             textField.limit(maxCount, allowedCharacters: allowedCharacters)
