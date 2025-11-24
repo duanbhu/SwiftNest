@@ -96,3 +96,42 @@ public extension UITextField {
         return self
     }
 }
+
+public extension UITextView {
+   
+    @discardableResult
+    /// 限制输入字数
+    /// - Parameter maxCount: 最大字数
+    /// - Returns: self
+    func limit(_ maxCount: Int) -> Self {
+        rx.text.orEmpty.subscribe(onNext: { [weak self] text in
+            guard let self = self else { return }
+            if self.markedTextRange == nil, text.count > maxCount {
+                self.text = String(text.prefix(maxCount))
+            }
+        }).disposed(by: rx.disposeBag)
+        return self
+    }
+    
+    @discardableResult
+    func limit(_ maxCount: Int, allowedCharacters: String) -> Self {
+        rx.text.orEmpty.subscribe(onNext: { [weak self] text in
+            guard let self = self else { return }
+            if self.markedTextRange == nil {
+                let set = CharacterSet(charactersIn: allowedCharacters)
+                var string = text.components(separatedBy: set.inverted).joined()
+                
+                let pattern = "(?i)zfb|wx|vx|q" // (?i) 表示忽略大小写
+                let regex = try? NSRegularExpression(pattern: pattern, options: [])
+                let range = NSRange(location: 0, length: string.utf16.count)
+                string = regex?.stringByReplacingMatches(in: string, options: [], range: range, withTemplate: "") ?? string
+                
+                if string.count > maxCount {
+                    string = String(string.prefix(maxCount))
+                }
+                self.text = string
+            }
+        }).disposed(by: rx.disposeBag)
+        return self
+    }
+}

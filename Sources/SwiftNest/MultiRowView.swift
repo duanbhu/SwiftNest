@@ -204,10 +204,11 @@ public class MultiRowView: UIControl {
         let textView = JKPlaceHolderTextView()
         textView.font = MultiRowConfiguration.default().textViewFont
         textView.textColor = MultiRowConfiguration.default().textViewColor
+        textView.placeHolderColor = .placeholderText
         textView.translatesAutoresizingMaskIntoConstraints = false
         
-        textView.textContainerInset = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
-        textView.placeholderOrigin = CGPoint(x: 2, y: 2)
+        textView.textContainerInset = UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5)
+        textView.placeholderOrigin = CGPoint(x: 5, y: 2)
         stackView1.addArrangedSubview(textView)
         stackView1.set(distribution: .fill)
         stackView1.set(alignment: .top)
@@ -707,6 +708,7 @@ extension MultiRowView: UITextViewDelegate {
     // 自动计算textView高度
     public func textViewDidChange(_ textView: UITextView) {
         let width = textView.frame.width - textView.textContainerInset.left - textView.textContainerInset.right
+        // 计算时有事会不对
         let textHeight = textView.text.jk.heightAccording(width: width, font: textView.font!) + textView.textContainerInset.top + textView.textContainerInset.bottom
         let autoHeight = max(textHeight, 30)
         guard tvLcH.constant != autoHeight else {

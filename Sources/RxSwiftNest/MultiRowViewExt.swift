@@ -7,15 +7,29 @@
 import SwiftNest
 
 public extension MultiRowView {
+    enum TextInputViewType {
+        case textField, textView
+    }
+    
     @discardableResult
-    func limit(_ maxCount: Int) -> Self {
-        textField.limit(maxCount)
+    func limit(_ maxCount: Int, _ type: TextInputViewType) -> Self {
+        switch type {
+        case .textField:
+            textField.limit(maxCount)
+        case .textView:
+            textView.limit(maxCount)
+        }
         return self
     }
     
     @discardableResult
-    func limit(_ maxCount: Int, allowedCharacters: String) -> Self {
-        textField.limit(maxCount, allowedCharacters: allowedCharacters)
+    func limit(_ maxCount: Int, allowedCharacters: String, _ type: TextInputViewType) -> Self {
+        switch type {
+        case .textField:
+            textField.limit(maxCount, allowedCharacters: allowedCharacters)
+        case .textView:
+            textView.limit(maxCount, allowedCharacters: allowedCharacters)
+        }
         return self
     }
     
