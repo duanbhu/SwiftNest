@@ -708,8 +708,8 @@ extension MultiRowView: UITextViewDelegate {
     // 自动计算textView高度
     public func textViewDidChange(_ textView: UITextView) {
         let width = textView.frame.width - textView.textContainerInset.left - textView.textContainerInset.right
-        // 计算时有事会不对
-        let textHeight = textView.text.jk.heightAccording(width: width, font: textView.font!) + textView.textContainerInset.top + textView.textContainerInset.bottom
+        // 有时会不对
+        let textHeight = "\(textView.text ?? "呃")呃".jk.heightAccording(width: width, font: textView.font!) + textView.textContainerInset.top + textView.textContainerInset.bottom
         let autoHeight = max(textHeight, 30)
         guard tvLcH.constant != autoHeight else {
             return
