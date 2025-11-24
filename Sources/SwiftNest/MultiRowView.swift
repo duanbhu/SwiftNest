@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import JKSwiftExtension
 
 public class MultiRowConfiguration: NSObject {
     
@@ -29,9 +30,11 @@ public class MultiRowConfiguration: NSObject {
     public var detailsColor: UIColor = .black
     public var detailsFont: UIFont = .regular(14)
     
-//    var placeholderColor: UIColor = .placeholderText
     public var textFieldColor: UIColor = .black
     public var textFieldFont: UIFont = .regular(14)
+    
+    public var textViewColor: UIColor = .black
+    public var textViewFont: UIFont = .regular(14)
     
     public var valueColor: UIColor = .gray
     public var valueFont: UIFont = .regular(14)
@@ -195,8 +198,25 @@ public class MultiRowView: UIControl {
         return textField
     }()
     
-    public private(set) lazy var textView: UITextView = {
-        let textView = UITextView()
+    // 当前只处理了，跟在title后的情况
+    private var tvLcH: NSLayoutConstraint!
+    public private(set) lazy var textView: JKPlaceHolderTextView = {
+        let textView = JKPlaceHolderTextView()
+        textView.font = MultiRowConfiguration.default().textViewFont
+        textView.textColor = MultiRowConfiguration.default().textViewColor
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        
+        textView.textContainerInset = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
+        textView.placeholderOrigin = CGPoint(x: 2, y: 2)
+        stackView1.addArrangedSubview(textView)
+        stackView1.set(distribution: .fill)
+        stackView1.set(alignment: .top)
+        tvLcH = textView.heightAnchor.constraint(equalToConstant: 30)
+        NSLayoutConstraint.activate([
+            tvLcH,
+            leadStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right),
+        ])
+        textView.delegate = self
         return textView
     }()
     
@@ -354,9 +374,11 @@ public class MultiRowView: UIControl {
         
         // 默认垂直居中
         trailStackViewCenterY_lc = trailStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
+        let lc = trailStackView.leadingAnchor.constraint(greaterThanOrEqualTo: leadStackView.trailingAnchor, constant: 5)
+        lc.priority = .defaultHigh
         NSLayoutConstraint.activate([
             trailStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right),
-            trailStackView.leadingAnchor.constraint(greaterThanOrEqualTo: leadStackView.trailingAnchor, constant: 5),
+            lc,
             trailStackViewCenterY_lc!
         ])
     }
@@ -483,6 +505,7 @@ public extension MultiRowView {
         return self
     }
     
+    // MARK: - valueLabel
     @discardableResult
     func value(_ title: String, font: UIFont? = nil, color: UIColor? = nil) -> Self {
         valueLabel.text = title
@@ -502,6 +525,7 @@ public extension MultiRowView {
         return self
     }
     
+    // MARK: - textField
     @discardableResult
     func placeholder(_ placeholder: String, font: UIFont? = nil, color: UIColor? = nil) -> Self {
         textField.placeholder = placeholder
@@ -510,7 +534,30 @@ public extension MultiRowView {
     
     @discardableResult
     func TF(font: UIFont? = nil, color: UIColor? = nil) -> Self {
-        textField.placeholder = placeholder
+        if let font = font {
+            textField.font = font
+        }
+        if let color = color {
+            textField.textColor = color
+        }
+        return self
+    }
+    
+    // MARK: - textView
+    @discardableResult
+    func tvPlaceholder(_ placeholder: String, font: UIFont? = nil, color: UIColor? = nil) -> Self {
+        textView.placeHolder = placeholder
+        return self.TF(font: font, color: color)
+    }
+    
+    @discardableResult
+    func tv(font: UIFont? = nil, color: UIColor? = nil) -> Self {
+        if let font = font {
+            textView.font = font
+        }
+        if let color = color {
+            textView.textColor = color
+        }
         return self
     }
     
@@ -653,5 +700,18 @@ public extension MultiRowView {
             questionButton.leadingAnchor.constraint(equalTo: followView.trailingAnchor, constant: 8)
         ])
         return self
+    }
+}
+
+extension MultiRowView: UITextViewDelegate {
+    // 自动计算textView高度
+    public func textViewDidChange(_ textView: UITextView) {
+        let width = textView.frame.width - textView.textContainerInset.left - textView.textContainerInset.right
+        let textHeight = textView.text.jk.heightAccording(width: width, font: textView.font!) + textView.textContainerInset.top + textView.textContainerInset.bottom
+        let autoHeight = max(textHeight, 30)
+        guard tvLcH.constant != autoHeight else {
+            return
+        }
+         tvLcH.constant = autoHeight
     }
 }

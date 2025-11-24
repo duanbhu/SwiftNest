@@ -29,10 +29,10 @@ class ViewController: UIViewController {
                 .title("手机号")
                 .backgroundColor(.white)
             switch idx {
-            case 0:
+            case 8:
                 rowView.details("188 8888 8888")
                     .trailerType(.arrow)
-            case 1:
+            case 9:
                 rowView.value("未绑定")
                     .trailerType(.arrow)
             case 2:
@@ -70,12 +70,15 @@ class ViewController: UIViewController {
                 rowView.iconImageView.corner(27.5)
                     .backgroundColor(.green)
                 
-            case 8:
+            case 0:
                 rowView.title("密码")
                     .placeholder("请输入密码")
                     .leftStackAxis(.vertical)
                     .leftStackSpacing(6)
                     .trailerType(.password)
+            case 1:
+                rowView.title("取餐地址")
+                    .tvPlaceholder("请输入取餐地址")
             default:
                 break
             }
