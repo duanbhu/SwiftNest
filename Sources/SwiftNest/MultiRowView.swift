@@ -547,7 +547,7 @@ public extension MultiRowView {
     @discardableResult
     func tvPlaceholder(_ placeholder: String, font: UIFont? = nil, color: UIColor? = nil) -> Self {
         textView.placeHolder = placeholder
-        return self.TF(font: font, color: color)
+        return self.tv(font: font, color: color)
     }
     
     @discardableResult
