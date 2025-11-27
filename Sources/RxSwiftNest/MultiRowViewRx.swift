@@ -8,13 +8,21 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import RxGesture
 import SwiftNest
 
 @MainActor
 public extension Reactive where Base: MultiRowView {
     /// MultiRowView. tap
-    var tap: ControlEvent<Void> {
-        controlEvent(.touchUpInside)
+    func tap() -> Observable<Void> {
+        return tapGesture().when(.recognized).map { _ in () }
+    }
+    
+    func tapDriver() -> Driver<Void> {
+        return tap()
+            .asDriver { error in
+                return .empty()
+            }
     }
     
     /// annexButton.rx.tap
@@ -26,6 +34,12 @@ public extension Reactive where Base: MultiRowView {
     /// textField.rx.textInput
     var textInput: TextInput<UITextField> {
         return base.textField.rx.textInput
+    }
+    
+    /// textView.rx.textInput
+    var textInput2: TextInput<UITextView> {
+        let textView = base.textView as UITextView
+        return textView.rx.textInput
     }
     
     /// textField.rx.text.orEmpty.asDriver()

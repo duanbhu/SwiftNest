@@ -30,6 +30,7 @@
     "RxCocoa": [
       "~> 6.0.0"
     ],
-    "NSObject+Rx": []
+    "NSObject+Rx": [],
+    "RxGesture": []
   }
 }

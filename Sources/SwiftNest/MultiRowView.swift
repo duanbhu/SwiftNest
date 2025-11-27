@@ -383,39 +383,6 @@ public class MultiRowView: UIControl {
             trailStackViewCenterY_lc!
         ])
     }
-    /*
-    // 标记触摸开始的位置
-    public var touchInside2 = false
-    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        touchInside2 = true
-        // 可选：高亮效果
-        isHighlighted = true
-    }
-    
-    override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesMoved(touches, with: event)
-        guard let touch = touches.first else { return }
-        // 检查手指是否仍在按钮范围内
-        touchInside2 = bounds.contains(touch.location(in: self))
-        isHighlighted = touchInside2 // 更新高亮状态
-    }
-    
-    override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesEnded(touches, with: event)
-        isHighlighted = false
-        // 如果手指在按钮内抬起，则触发事件
-        if touchInside2 {
-            sendActions(for: .touchUpInside)
-        }
-    }
-    
-    override public func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesCancelled(touches, with: event)
-        isHighlighted = false
-        touchInside2 = false
-    }
-     */
 }
 
 public extension MultiRowView {

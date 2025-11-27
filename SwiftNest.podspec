@@ -42,4 +42,5 @@ TODO: Add long description of the pod here.
   s.dependency 'RxSwift', '~> 6.0.0'
   s.dependency 'RxCocoa', '~> 6.0.0'
   s.dependency 'NSObject+Rx'
+  s.dependency 'RxGesture'
 end
