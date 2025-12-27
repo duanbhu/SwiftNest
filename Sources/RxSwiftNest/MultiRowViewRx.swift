@@ -31,6 +31,11 @@ public extension Reactive where Base: MultiRowView {
         return base.annexButton.rx.tap
     }
     
+    var questionTap: ControlEvent<Void> {
+        base.questionButton.isUserInteractionEnabled(true)
+        return base.questionButton.rx.tap
+    }
+    
     /// textField.rx.textInput
     var textInput: TextInput<UITextField> {
         return base.textField.rx.textInput

@@ -661,6 +661,7 @@ public extension MultiRowView {
     @discardableResult
     func addQuestionMarkImage(follow view: UIView? = nil) -> Self {
         let followView = view ?? titleLabel
+        questionButton.jk.touchExtendInset = UIEdgeInsets(top: -30, left: -50, bottom: -30, right: -50)
         NSLayoutConstraint.activate([
             questionButton.widthAnchor.constraint(equalToConstant: 16),
             questionButton.heightAnchor.constraint(equalToConstant: 16),
