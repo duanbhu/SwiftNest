@@ -35,7 +35,7 @@ class ViewController: UIViewController {
             case 9:
                 rowView.value("未绑定")
                     .trailerType(.arrow)
-            case 2:
+            case 10:
                 rowView.value("188 **** 8888")
             case 3:
                 rowView.placeholder("请输入手机号")
@@ -79,6 +79,18 @@ class ViewController: UIViewController {
             case 1:
                 rowView.title("取餐地址")
                     .tvPlaceholder("请输入取餐地址")
+            case 2:
+                rowView
+                    .icon("icon_delivery_search", resize: CGSize(width: 20.wpt, height: 20.wpt))
+                    .placeholder("请输入订单编号")
+                    .backgroundColor(.white)
+                
+                rowView.trailerType(icon: "icon_arrow_down_black", title: "订单编号")
+                    .trailerSize(CGSize(width: 95.wpt, height: 44))
+                
+                rowView.annexButton.setImageTitleLayout(.imgRight, spacing: 2)
+                    .textColor(.color("#798499"))
+                
             default:
                 break
             }

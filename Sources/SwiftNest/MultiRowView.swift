@@ -288,6 +288,7 @@ public class MultiRowView: UIControl {
         
         // 居中显示，（有些问题，需要调整）
         titleCenterY_lc = stackView.centerYAnchor.constraint(equalTo: centerYAnchor)
+        titleCenterY_lc?.priority = .defaultLow
         titleCenterY_lc?.isActive = true
         return stackView
     }()
