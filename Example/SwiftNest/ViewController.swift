@@ -102,6 +102,8 @@ class ViewController: UIViewController, MultiRowViewContainerable {
                 .addSeparatorLine(color: .color("#EEEEEE"), inset: 16.wpt)
             
             switch item {
+            case .name:
+                rowView.trailerType(.switch)
             case .signature:
                 rowView.value("", font: .regular(14))
             case .deliveryTime:
@@ -125,7 +127,6 @@ class ViewController: UIViewController, MultiRowViewContainerable {
                 
                 rowView.annexButton.setImageTitleLayout(.imgRight, spacing: 2)
                     .textColor(.color("#798499"))
-                rowView.layoutToTrailingView(true)
             default: break
             }
         }
