@@ -191,8 +191,9 @@ public class MultiRowView: UIControl {
         textField.clearButtonMode = .whileEditing
         textField.translatesAutoresizingMaskIntoConstraints = false
         stackView1.addArrangedSubview(textField)
+        stackView1.set(distribution: .fill)
         
-        let widthLC = textField.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.8)
+        let widthLC = textField.widthAnchor.constraint(greaterThanOrEqualTo: widthAnchor, multiplier: 0.8)
         widthLC.priority = .defaultHigh
         widthLC.isActive = true
         return textField
@@ -213,10 +214,8 @@ public class MultiRowView: UIControl {
         stackView1.set(distribution: .fill)
         stackView1.set(alignment: .top)
         tvLcH = textView.heightAnchor.constraint(equalToConstant: 30)
-        NSLayoutConstraint.activate([
-            tvLcH,
-            leadStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right),
-        ])
+        tvLcH.isActive = true
+        layoutToSuperView(true)
         textView.delegate = self
         return textView
     }()
@@ -288,8 +287,8 @@ public class MultiRowView: UIControl {
         
         // 居中显示，（有些问题，需要调整）
         titleCenterY_lc = stackView.centerYAnchor.constraint(equalTo: centerYAnchor)
-        titleCenterY_lc?.priority = .defaultLow
         titleCenterY_lc?.isActive = true
+        titleCenterY_lc?.priority = .defaultLow
         return stackView
     }()
     
@@ -309,7 +308,7 @@ public class MultiRowView: UIControl {
     
     public init(insets: UIEdgeInsets = MultiRowConfiguration.default().insets) {
         self.insets = insets
-        super.init(frame: .zero)
+        super.init(frame: CGRect(x: 0, y: 0, width: kScreenWidth, height: 50.08))
         makeUI()
     }
     
@@ -358,6 +357,17 @@ public class MultiRowView: UIControl {
     
     private var trailStackViewCenterY_lc: NSLayoutConstraint?
     
+    private var lcs: [NSLayoutConstraint] = []
+    
+    private var leadStackViewTrailingLessThanOrEqualToSuper: NSLayoutConstraint?
+    
+    private var leadStackViewTrailingEqualToSuper: NSLayoutConstraint?
+    
+    private var leadStackViewTrailingGreaterThanOrEqualToTrailStackView: NSLayoutConstraint?
+    
+    private var leadStackViewTrailingEqualToTrailStackView: NSLayoutConstraint?
+
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -367,22 +377,30 @@ public class MultiRowView: UIControl {
     }
     
     func updateLayoutContentViews() {
-        NSLayoutConstraint.activate([
-            leadStackView.topAnchor.constraint(equalTo: topAnchor, constant: insets.top),
-            leadStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left),
-            leadStackView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -insets.right),
-            leadStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom)
-        ])
+        NSLayoutConstraint.deactivate(lcs)
         
         // 默认垂直居中
         trailStackViewCenterY_lc = trailStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
-        let lc = trailStackView.leadingAnchor.constraint(greaterThanOrEqualTo: leadStackView.trailingAnchor, constant: 5)
-        lc.priority = .defaultHigh
-        NSLayoutConstraint.activate([
+        
+        leadStackViewTrailingLessThanOrEqualToSuper = leadStackView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -insets.right)
+        
+        leadStackViewTrailingEqualToSuper = leadStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right)
+        
+        leadStackViewTrailingGreaterThanOrEqualToTrailStackView = trailStackView.leadingAnchor.constraint(greaterThanOrEqualTo: leadStackView.trailingAnchor, constant: 5)
+        leadStackViewTrailingGreaterThanOrEqualToTrailStackView?.priority = .defaultHigh
+        
+        leadStackViewTrailingEqualToTrailStackView = trailStackView.leadingAnchor.constraint(equalTo: leadStackView.trailingAnchor, constant: 5)
+        
+        lcs = [
+            leadStackView.topAnchor.constraint(equalTo: topAnchor, constant: insets.top),
+            leadStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left),
+            leadStackViewTrailingLessThanOrEqualToSuper!,
+            leadStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom),
+            
             trailStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right),
-            lc,
             trailStackViewCenterY_lc!
-        ])
+        ]
+        NSLayoutConstraint.activate(lcs)
     }
 }
 
@@ -669,6 +687,40 @@ public extension MultiRowView {
             followView.centerYAnchor.constraint(equalTo: questionButton.centerYAnchor),
             questionButton.leadingAnchor.constraint(equalTo: followView.trailingAnchor, constant: 8)
         ])
+        return self
+    }
+    
+    @discardableResult
+    func layoutToSuperView(_ isEqual: Bool, constant: CGFloat? = nil) -> Self {
+        let constant = constant ?? insets.right
+        if isEqual {
+            leadStackViewTrailingEqualToSuper?.constant = -constant
+        } else {
+            leadStackViewTrailingLessThanOrEqualToSuper?.constant = -constant
+        }
+        
+        leadStackViewTrailingEqualToSuper?.isActive = isEqual
+        leadStackViewTrailingLessThanOrEqualToSuper?.isActive = !isEqual
+        
+        leadStackViewTrailingEqualToTrailStackView?.isActive = false
+        leadStackViewTrailingGreaterThanOrEqualToTrailStackView?.isActive = false
+        return self
+    }
+    
+    @discardableResult
+    func layoutToTrailingView(_ isEqual: Bool, constant: CGFloat? = nil) -> Self {
+        let constant = constant ?? 5
+        if isEqual {
+            leadStackViewTrailingEqualToTrailStackView?.constant = constant
+        } else {
+            leadStackViewTrailingGreaterThanOrEqualToTrailStackView?.constant = constant
+        }
+        
+        leadStackViewTrailingEqualToSuper?.isActive = false
+        leadStackViewTrailingLessThanOrEqualToSuper?.isActive = false
+        
+        leadStackViewTrailingEqualToTrailStackView?.isActive = isEqual
+        leadStackViewTrailingGreaterThanOrEqualToTrailStackView?.isActive = !isEqual
         return self
     }
 }
