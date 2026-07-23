@@ -101,4 +101,9 @@ public extension MultiRowViewContainerable {
         }
         return rowView
     }
+    
+    /// 根据entity获取对应的MultiRowView
+    func rowView(_ entity: RowEntity) -> MultiRowView? {
+        return rowViewDict[entity]
+    }
 }
