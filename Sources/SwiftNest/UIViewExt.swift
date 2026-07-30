@@ -52,13 +52,6 @@ public extension UIView {
     }
     
     @discardableResult
-    func corner(_ radius: CGFloat) -> Self {
-        layer.cornerRadius = radius
-        layer.masksToBounds = true
-        return self
-    }
-    
-    @discardableResult
     func borderWidth(_ w: CGFloat) -> Self {
         layer.borderWidth = w
         return self
